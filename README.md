@@ -10,4 +10,4 @@ $ pip install -r requirements.txt
 ```
 ## Live Demo (Executable file [.EXE])
 You can also download the final version executable without any installation [here](https://mouadessalim.xyz/upload-project/CSGO-Calculator/CSGO%20CALCULATOR.rar) 
-> Any troubleshouting ? Contact me in my [website](https://mouadessalim.xyz)
+> Any troubleshouting ? Contact me in my [website](https://mouadessalim.xyz) or ask community in **Issues**
