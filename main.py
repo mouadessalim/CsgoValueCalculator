@@ -39,7 +39,7 @@ def calc():
 					calc.final_response = str(conversion_finished) + " " + responseip['currency']			
 			else:
 				call.progressBar.setValue(100)
-				calc.final_response = "Impossible de trouver votre profil"
+				calc.final_response = "Impossible de trouver votre profil ou les serveur sont indisponible"
 		else:
 			call.progressBar.setValue(100)
 			calc.final_response = "Steam ID64 (DEC) incorrecte"
