@@ -1,29 +1,37 @@
 import requests
 from bs4 import BeautifulSoup
-import time
 from PyQt5 import QtWidgets, uic
+import json 
+import time
 
 
 def calc():
 	SteamID= call.lineEdit.text()
 	call.progressBar.setValue(15)
+	call.pushButton.setText("Verification...")
 	if(SteamID.isdigit()):
 		call.progressBar.setValue(30)
+		time.sleep(2)
 		if int(SteamID) > 9999999999999999:
+			call.pushButton.setText("Calculating...")
 			call.progressBar.setValue(40)
-			response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + SteamID)
+			params = (
+    			('api_key', 'd7da4500-f32d-4c9d-a3b6-145ce70397d3'),
+    			('url', 'http://csgobackpack.net/api/GetInventoryValue/?id={}'.format(SteamID)),
+			)
+			response = requests.get('https://api.webscraping.ai/html', params=params)
+			response_html = BeautifulSoup(response.text, features="html.parser")
+			response_html_brute = response_html.find('body').get_text()
+			response_json = json.loads(response_html_brute)
+			#response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + SteamID)
 			call.progressBar.setValue(70)
 			time.sleep(2)
-			if response.ok:
-				page = BeautifulSoup(response.text, features="html.parser")
-				rank = page.find("table", class_="table-cell")
-				value = rank.find_all("strong")[1].get_text()
-				value_float = float(value[1:])
+			if response.ok and response_json['success'] == 'true':
 				call.progressBar.setValue(80)
 				responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
 				if responseip['currency'] == "USD":
 					call.progressBar.setValue(100)
-					calc.final_response = str(value_float) + " USD"
+					calc.final_response = str(response_json['value']) + " USD"
 				else:
 					url = "https://exchangerate-api.p.rapidapi.com/rapid/latest/USD"
 
@@ -33,19 +41,20 @@ def calc():
     					}
 					response = requests.request("GET", url, headers=headers).json()
 					call.progressBar.setValue(90)
-					conversion = response['rates'][responseip['currency']] * value_float
+					conversion = response['rates'][responseip['currency']] * float(response_json['value'])
 					conversion_finished = round(conversion, 2)
 					call.progressBar.setValue(100)
 					calc.final_response = str(conversion_finished) + " " + responseip['currency']			
 			else:
 				call.progressBar.setValue(100)
-				calc.final_response = "Impossible de trouver votre profil ou les serveur sont indisponible"
+				calc.final_response = "Impossible de trouver votre profil"
 		else:
 			call.progressBar.setValue(100)
 			calc.final_response = "Steam ID64 (DEC) incorrecte"
 	else:
 		call.progressBar.setValue(100)
 		calc.final_response = "Steam ID64 (DEC) incorrecte"
+	call.pushButton.setText("Success !")
 	reponse()
 
 def reponse():
