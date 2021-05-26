@@ -2,7 +2,10 @@
 With this python application you can calculate any **Steam Csgo Inventory** 
 - Setup
 - Live Demo
-
+## Overview
+![image1](https://github.com/mouadessalim/CsgoValueCalculator/blob/main/img_gui_1.png?raw=true)
+![image2](https://github.com/mouadessalim/CsgoValueCalculator/blob/main/img_gui_2.png?raw=true)
+![image3](https://github.com/mouadessalim/CsgoValueCalculator/blob/main/img_gui_3.png?raw=true)
 ## Quick Setup (With Git) 
 ```
 $ git clone https://github.com/mouadessalim/CsgoValueCalculator.git
