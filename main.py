@@ -1,38 +1,38 @@
 import requests
 from bs4 import BeautifulSoup
-from PyQt5 import QtWidgets, uic
-import json 
 import time
+from PyQt5 import QtWidgets, uic
 
 
 def calc():
+	call.pushButton.setText("Verification ✔")
 	SteamID= call.lineEdit.text()
 	call.progressBar.setValue(15)
-	call.pushButton.setText("Verification...")
+	time.sleep(1)
 	if(SteamID.isdigit()):
+		call.pushButton.setText("Searching... 🛠")
 		call.progressBar.setValue(30)
-		time.sleep(2)
+		time.sleep(1)
 		if int(SteamID) > 9999999999999999:
-			call.pushButton.setText("Calculating...")
+			call.label_2.setText("Don't worry if the app is crashing, just wait 😋")
 			call.progressBar.setValue(40)
-			params = (
-    			('api_key', 'd7da4500-f32d-4c9d-a3b6-145ce70397d3'),
-    			('url', 'http://csgobackpack.net/api/GetInventoryValue/?id={}'.format(SteamID)),
-			)
-			response = requests.get('https://api.webscraping.ai/html', params=params)
-			response_html = BeautifulSoup(response.text, features="html.parser")
-			response_html_brute = response_html.find('body').get_text()
-			response_json = json.loads(response_html_brute)
-			#response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + SteamID)
-			call.progressBar.setValue(70)
-			time.sleep(2)
-			if response.ok and response_json['success'] == 'true':
+			response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + SteamID)
+			call.progressBar.setValue(65)
+			time.sleep(1)
+			if response.ok:
+				page = BeautifulSoup(response.text, features="html.parser")
+				rank = page.find("table", class_="table-cell")
+				value = rank.find_all("strong")[1].get_text()
+				value_float = float(value[1:])
 				call.progressBar.setValue(80)
+				time.sleep(1)
 				responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
 				if responseip['currency'] == "USD":
 					call.progressBar.setValue(100)
-					calc.final_response = str(response_json['value']) + " USD"
+					call.pushButton.setText("Success! ✅")
+					calc.final_response = str(value_float) + " USD 💰"
 				else:
+					call.pushButton.setText("Converting... 🧐")
 					url = "https://exchangerate-api.p.rapidapi.com/rapid/latest/USD"
 
 					headers = {
@@ -41,20 +41,23 @@ def calc():
     					}
 					response = requests.request("GET", url, headers=headers).json()
 					call.progressBar.setValue(90)
-					conversion = response['rates'][responseip['currency']] * float(response_json['value'])
+					conversion = response['rates'][responseip['currency']] * value_float
 					conversion_finished = round(conversion, 2)
 					call.progressBar.setValue(100)
-					calc.final_response = str(conversion_finished) + " " + responseip['currency']			
+					call.pushButton.setText("Success! ✅")
+					calc.final_response = str(conversion_finished) + " " + responseip['currency'] + " 💰"		 		
 			else:
 				call.progressBar.setValue(100)
-				calc.final_response = "Impossible de trouver votre profil"
+				call.pushButton.setText("Error ❌")
+				calc.final_response = "Could not find your profile or the server is down retry later if it's not working 🤔"
 		else:
+			call.pushButton.setText("Error ❌")
 			call.progressBar.setValue(100)
-			calc.final_response = "Steam ID64 (DEC) incorrecte"
+			calc.final_response = "Steam ID64 (DEC) incorrect ❗"
 	else:
+		call.pushButton.setText("Error ❌")
 		call.progressBar.setValue(100)
-		calc.final_response = "Steam ID64 (DEC) incorrecte"
-	call.pushButton.setText("Success !")
+		calc.final_response = "Steam ID64 (DEC) incorrect ❗"
 	reponse()
 
 def reponse():
