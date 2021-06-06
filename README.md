@@ -1,4 +1,3 @@
-![Discord](https://img.shields.io/discord/748901522565234720?logo=discord&logoColor=white)
 # CsgoValueCalculator
 With this python application you can calculate any **Steam Csgo Inventory** 
 - Quick Setup
