@@ -11,6 +11,7 @@ With this python application you can calculate any **Steam Csgo Inventory**
 ```
 $ git clone https://github.com/mouadessalim/CsgoValueCalculator.git
 $ pip install -r requirements.txt
+$ pip install cx_Freeze
 $ py main.py build
 ```
 And it's done ! you have your executable file in **build directory**
