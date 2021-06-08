@@ -15,11 +15,12 @@ $ pip install cx_Freeze
 $ py setup.py build
 ```
 And it's done ! you have your executable file in **build directory**
-## Quick Setup (With Git) 
+## Quick Setup 
 ```
 $ git clone https://github.com/mouadessalim/CsgoValueCalculator.git
 $ pip install -r requirements.txt 
 ```
-## Live Demo (Executable file [.EXE])
-You can also download the final version executable without any installation [here](https://mouadessalim.xyz/upload-project/CSGO-Calculator/CSGO%20CALCULATOR.rar) 
-> Any troubleshouting ? Contact me in my [website](https://mouadessalim.xyz) or ask community in **Issues**
+You can run it with Python;
+## Live Demo (With Installer [.EXE])
+You can also download the final version executable without any installation [here](https://mouadessalim.xyz/upload-project/CSGO-Calculator/CSGO%20CALCULATOR.rar).
+> Any troubleshouting ? Contact me on my [website](https://mouadessalim.xyz/#contact) or ask community in **Issues**
