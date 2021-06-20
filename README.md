@@ -20,7 +20,7 @@ And it's done ! you have your executable file in **build directory**
 $ git clone https://github.com/mouadessalim/CsgoValueCalculator.git
 $ pip install -r requirements.txt 
 ```
-You can run it with Python;
+You can run it with Python.
 ## Live Demo (With Installer [.EXE])
-You can also download the final version executable without any installation [here](https://mouadessalim.xyz/upload-project/CSGO-Calculator/CsgoValueCalculator.exe).
+You can also download the final version executable [here](https://mouadessalim.xyz/upload-project/CSGO-Calculator/CsgoValueCalculator.exe).
 > Any troubleshouting ? Contact me on my [website](https://mouadessalim.xyz/#contact) or ask community in **Issues**
