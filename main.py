@@ -33,15 +33,9 @@ def calc():
 					calc.final_response = str(value_float) + " USD 💰"
 				else:
 					call.pushButton.setText("Converting... 🧐")
-					url = "https://exchangerate-api.p.rapidapi.com/rapid/latest/USD"
-
-					headers = {
-    					'x-rapidapi-key': "c787e69104msha02a28785e07404p156082jsn3bc083a5ebca",
-    					'x-rapidapi-host': "exchangerate-api.p.rapidapi.com"
-    					}
-					response = requests.request("GET", url, headers=headers).json()
+					response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/{responseip['currency'].lower()}.json").json()
 					call.progressBar.setValue(90)
-					conversion = response['rates'][responseip['currency']] * value_float
+					conversion = response[responseip['currency'].lower()] * value_float
 					conversion_finished = round(conversion, 2)
 					call.progressBar.setValue(100)
 					call.pushButton.setText("Success! ✅")
