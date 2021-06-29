@@ -22,5 +22,5 @@ $ pip install -r requirements.txt
 ```
 You can run it with Python.
 ## Live Demo (With Installer [.EXE])
-You can also download the final version executable [here](https://mouadessalim.xyz/upload-project/CSGO-Calculator/CsgoValueCalculator.exe).
+You can also download the final version executable in [the latest release](https://github.com/mouadessalim/CsgoValueCalculator/releases/latest).
 > Any troubleshouting ? Contact me on my [website](https://mouadessalim.xyz/#contact) or ask community in **Issues**
