@@ -10,6 +10,7 @@ packages = ['queue']
 
 setup(
 	name = "CSGO VALUE CALCULATOR",
+	version = "1.2"
 	options = {'build_exe': {'include_files':includefiles, 'packages':packages}},
 	executables = [Executable("main.py", base=base)]
 )
