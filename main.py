@@ -2,71 +2,74 @@ import requests
 from bs4 import BeautifulSoup
 import time
 from PyQt5 import QtWidgets, uic
+import updater
+import threading 
 
+def window():
+	app = QtWidgets.QApplication([])
+	window.call = uic.loadUi("gui.ui")
+
+	window.call.progressBar.setMinimum(0)
+	window.call.progressBar.setMaximum(100)
+	window.call.progressBar.setValue(0)
+
+	window.call.pushButton.clicked.connect(calc)
+
+	window.call.show()
+	app.exec()
 
 def calc():
-	call.pushButton.setText("Verification ✔")
-	SteamID= call.lineEdit.text()
-	call.progressBar.setValue(15)
+	window.call.pushButton.setText("Verification ✔")
+	SteamID = window.call.lineEdit.text()
+	window.call.progressBar.setValue(15)
 	time.sleep(1)
 	if(SteamID.isdigit()):
-		call.pushButton.setText("Searching... 🛠")
-		call.progressBar.setValue(30)
+		window.call.pushButton.setText("Searching... 🛠")
+		window.call.progressBar.setValue(30)
 		time.sleep(1)
 		if int(SteamID) > 9999999999999999:
-			call.label_2.setText("Don't worry if the app is crashing, just wait 😋")
-			call.progressBar.setValue(40)
+			window.call.label_2.setText("Don't worry if the app is crashing, just wait 😋")
+			window.call.progressBar.setValue(40)
 			response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + SteamID)
-			call.progressBar.setValue(65)
+			window.call.progressBar.setValue(65)
 			time.sleep(1)
 			if response.ok:
 				page = BeautifulSoup(response.text, features="html.parser")
 				rank = page.find("table", class_="table-cell")
 				value = rank.find_all("strong")[1].get_text()
 				value_float = float(value[1:])
-				call.progressBar.setValue(80)
+				window.call.progressBar.setValue(80)
 				time.sleep(1)
 				responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
 				if responseip['currency'] == "USD":
-					call.progressBar.setValue(100)
-					call.pushButton.setText("Success! ✅")
+					window.call.progressBar.setValue(100)
+					window.call.pushButton.setText("Success! ✅")
 					calc.final_response = str(value_float) + " USD 💰"
 				else:
-					call.pushButton.setText("Converting... 🧐")
+					window.call.pushButton.setText("Converting... 🧐")
 					response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/{responseip['currency'].lower()}.json").json()
-					call.progressBar.setValue(90)
+					window.call.progressBar.setValue(90)
 					conversion = response[responseip['currency'].lower()] * value_float
 					conversion_finished = round(conversion, 2)
-					call.progressBar.setValue(100)
-					call.pushButton.setText("Success! ✅")
+					window.call.progressBar.setValue(100)
+					window.call.pushButton.setText("Success! ✅")
 					calc.final_response = str(conversion_finished) + " " + responseip['currency'] + " 💰"		 		
 			else:
-				call.progressBar.setValue(100)
-				call.pushButton.setText("Error ❌")
+				window.call.progressBar.setValue(100)
+				window.call.pushButton.setText("Error ❌")
 				calc.final_response = "Could not find your profile or the server is down retry later if it's not working 🤔"
 		else:
-			call.pushButton.setText("Error ❌")
-			call.progressBar.setValue(100)
+			window.call.pushButton.setText("Error ❌")
+			window.call.progressBar.setValue(100)
 			calc.final_response = "Steam ID64 (DEC) incorrect ❗"
 	else:
-		call.pushButton.setText("Error ❌")
-		call.progressBar.setValue(100)
+		window.call.pushButton.setText("Error ❌")
+		window.call.progressBar.setValue(100)
 		calc.final_response = "Steam ID64 (DEC) incorrect ❗"
 	reponse()
 
 def reponse():
-	call.label_2.setText(calc.final_response)
+	window.call.label_2.setText(calc.final_response)
 
-app = QtWidgets.QApplication([])
-call = uic.loadUi("gui.ui")
-
-n = 100
-
-call.progressBar.setMinimum(0)
-call.progressBar.setMaximum(n)
-call.progressBar.setValue(0)
-
-call.pushButton.clicked.connect(calc)
-
-call.show()
-app.exec()
+cpu1 = threading.Thread(target=window).start()
+cpu2 = threading.Thread(target=updater.updatefunc).start()
