@@ -5,12 +5,12 @@ base = None
 if (sys.platform == "win32"):
     base = "Win32GUI"    # Tells the build script to hide the console.
 
-includefiles = ["gui.ui"]
-packages = ['queue', 'webbrowser', 'tkinter', 'updater']
+includefiles = ["gui.ui", "config.json"]
+packages = ['queue', 'webbrowser', 'tkinter', 'updater', 'base64']
 
 setup(
 	name = "CSGO VALUE CALCULATOR",
-	version = "1.3",
+	version = "1.3.1",
 	author = "Mouad Essalim",
 	author_email="essalim99@gmail.com",
 	options = {'build_exe': {'include_files':includefiles, 'packages':packages}},
