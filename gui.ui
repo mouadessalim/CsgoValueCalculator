@@ -41,17 +41,17 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>10</y>
+      <y>0</y>
       <width>771</width>
       <height>51</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Montserrat</family>
+      <family>Impact</family>
       <pointsize>24</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -99,10 +99,10 @@
     </property>
     <property name="font">
      <font>
-      <family>Montserrat</family>
-      <pointsize>14</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>Impact</family>
+      <pointsize>11</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="mouseTracking">
@@ -126,18 +126,18 @@ color: white</string>
    <widget class="QPushButton" name="pushButton">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>80</y>
-      <width>191</width>
-      <height>41</height>
+      <x>530</x>
+      <y>60</y>
+      <width>221</width>
+      <height>31</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <family>Montserrat</family>
-      <pointsize>16</pointsize>
-      <weight>75</weight>
-      <bold>true</bold>
+      <family>Impact</family>
+      <pointsize>11</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
      </font>
     </property>
     <property name="styleSheet">
@@ -158,7 +158,7 @@ QPushButton::pressed{
 </string>
     </property>
     <property name="text">
-     <string>Calculer</string>
+     <string>Search</string>
     </property>
     <property name="checkable">
      <bool>false</bool>
@@ -194,16 +194,16 @@ QProgressBar::chunk{
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>0</x>
       <y>180</y>
-      <width>531</width>
+      <width>771</width>
       <height>41</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <family>Impact</family>
-      <pointsize>14</pointsize>
+      <pointsize>11</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -228,6 +228,47 @@ QProgressBar::chunk{
     </property>
     <property name="textInteractionFlags">
      <set>Qt::LinksAccessibleByMouse</set>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_2">
+    <property name="geometry">
+     <rect>
+      <x>530</x>
+      <y>100</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Impact</family>
+      <pointsize>10</pointsize>
+      <weight>50</weight>
+      <bold>false</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QPushButton{
+
+	color: white;
+	background-color: #fe79c7;
+	border-radius: 10px
+	
+}
+
+QPushButton::pressed{
+
+	
+	background-color: rgb(170, 0, 255);
+
+}
+</string>
+    </property>
+    <property name="text">
+     <string>Download historical</string>
+    </property>
+    <property name="checkable">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
