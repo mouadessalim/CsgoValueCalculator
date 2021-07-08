@@ -4,6 +4,10 @@ import time
 from PyQt5 import QtWidgets, uic
 import updater
 import threading 
+import json
+import os
+from datetime import datetime
+import webbrowser
 
 def window():
 	app = QtWidgets.QApplication([])
@@ -14,42 +18,44 @@ def window():
 	window.call.progressBar.setValue(0)
 
 	window.call.pushButton.clicked.connect(calc)
+	window.call.pushButton_2.clicked.connect(uploader)
 
 	window.call.show()
 	app.exec()
+	
 
 def calc():
 	window.call.pushButton.setText("Verification ✔")
-	SteamID = window.call.lineEdit.text()
+	calc.SteamID = window.call.lineEdit.text()
 	window.call.progressBar.setValue(15)
 	time.sleep(1)
-	if(SteamID.isdigit()):
+	if(calc.SteamID.isdigit()):
 		window.call.pushButton.setText("Searching... 🛠")
 		window.call.progressBar.setValue(30)
 		time.sleep(1)
-		if int(SteamID) > 9999999999999999:
+		if int(calc.SteamID) > 9999999999999999:
 			window.call.label_2.setText("Don't worry if the app is crashing, just wait 😋")
 			window.call.progressBar.setValue(40)
-			response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + SteamID)
+			response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + calc.SteamID)
 			window.call.progressBar.setValue(65)
 			time.sleep(1)
 			if response.ok:
 				page = BeautifulSoup(response.text, features="html.parser")
 				rank = page.find("table", class_="table-cell")
 				value = rank.find_all("strong")[1].get_text()
-				value_float = float(value[1:])
+				calc.value_float = float(value[1:])
 				window.call.progressBar.setValue(80)
 				time.sleep(1)
 				responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
 				if responseip['currency'] == "USD":
 					window.call.progressBar.setValue(100)
 					window.call.pushButton.setText("Success! ✅")
-					calc.final_response = str(value_float) + " USD 💰"
+					calc.final_response = str(calc.value_float) + " USD 💰"
 				else:
 					window.call.pushButton.setText("Converting... 🧐")
 					response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/{responseip['currency'].lower()}.json").json()
 					window.call.progressBar.setValue(90)
-					conversion = response[responseip['currency'].lower()] * value_float
+					conversion = response[responseip['currency'].lower()] * calc.value_float
 					conversion_finished = round(conversion, 2)
 					window.call.progressBar.setValue(100)
 					window.call.pushButton.setText("Success! ✅")
@@ -70,6 +76,63 @@ def calc():
 
 def reponse():
 	window.call.label_2.setText(calc.final_response)
+	with open('account.json', 'r') as f:
+		data = json.load(f)
+		try:
+			data[calc.SteamID] = str(calc.value_float)
+			with open('account.json', 'w') as n:
+				n.write(str(json.dumps(data, indent=2)))
+		except:
+			return
 
-cpu1 = threading.Thread(target=window).start()
-cpu2 = threading.Thread(target=updater.updatefunc).start()
+def uploader():
+	with open('account.json', 'r') as f:
+		data = json.load(f)
+		window.call.progressBar.setValue(20)
+		time.sleep(1)
+		with open('historical.txt', 'w') as k:
+			window.call.progressBar.setValue(30)
+			for x, y in data.items():
+				response = requests.get("https://api.techniknews.net/ipgeo/").json()
+				window.call.progressBar.setValue(40)
+				if response['currency'] == "USD":
+					k.write(str(x + " = " + y + f" {response['currency']}\n"))
+					window.call.progressBar.setValue(60)
+				else:
+					window.call.progressBar.setValue(60)
+					response_c = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/{response['currency'].lower()}.json").json()
+					window.call.progressBar.setValue(70)
+					k.write(str(x + " = " + f"{round(float(response_c[response['currency'].lower()]) * float(y), 2)} {response['currency']}\n"))
+					window.call.progressBar.setValue(75)
+
+	params = (
+		('expires', '1w'),
+	)
+	fileopener = open('historical.txt', 'rb')
+	namefile = f'all_csgo-{datetime.now().strftime("%d_%m_%Y")}.txt'
+	files = {
+		'file': (namefile, fileopener),
+	}
+
+	response_u = requests.post('https://file.io/', params=params, files=files)
+	window.call.progressBar.setValue(90)
+	response_upload = response_u.json()
+	if response_u.ok:
+		if response_upload["success"] == True:
+			window.call.label_2.setText("your web browser was opened, you can download the file")
+			window.call.progressBar.setValue(100)
+			webbrowser.open(response_upload["link"])
+		else:
+			window.call.progressBar.setValue(100)
+			window.call.label_2.setText("this is a server error, please retry later or contact me !")
+	else:
+		window.call.progressBar.setValue(100)
+		window.call.label_2.setText("verifie your connexion or try later !")
+
+	fileopener.close()
+	os.remove('historical.txt')
+
+
+
+threading.Thread(target=window).start()
+threading.Thread(target=updater.updatefunc).start()
