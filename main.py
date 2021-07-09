@@ -132,7 +132,5 @@ def uploader():
 	fileopener.close()
 	os.remove('historical.txt')
 
-
-
 threading.Thread(target=window).start()
 threading.Thread(target=updater.updatefunc).start()
