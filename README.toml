@@ -1,0 +1,5 @@
+# My personal preferences.
+
+[indent]
+mode = "spaces"		# It's either "spaces" or "tabs".
+size = 4
