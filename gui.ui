@@ -120,7 +120,7 @@ color: white</string>
      <set>Qt::AlignCenter</set>
     </property>
     <property name="placeholderText">
-     <string>SteamID64 [DEX]</string>
+     <string>SteamID64 [DEC]</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
