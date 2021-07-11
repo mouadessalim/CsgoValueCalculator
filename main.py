@@ -76,21 +76,46 @@ def calc():
 
 def reponse():
 	window.call.label_2.setText(calc.final_response)
-	with open('account.json', 'r') as f:
-		data = json.load(f)
-		try:
-			data[calc.SteamID] = str(calc.value_float)
-			with open('account.json', 'w') as n:
-				n.write(str(json.dumps(data, indent=2)))
-		except:
-			return
+	if os.path.exists(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator"):
+		if os.path.exists(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json"):
+			with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'r') as f:
+				data = json.load(f)
+				try:
+					data[calc.SteamID] = str(calc.value_float)
+					with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as n:
+						n.write(str(json.dumps(data, indent=2)))
+				except:
+					return
+		else:
+			with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as k:
+				k.write("{}")
+			with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'r') as f:
+				data = json.load(f)
+				try:
+					data[calc.SteamID] = str(calc.value_float)
+					with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as n:
+						n.write(str(json.dumps(data, indent=2)))
+				except:
+					return
+	else:
+		os.mkdir(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator")
+		with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as k:
+				k.write("{}")
+		with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'r') as f:
+			data = json.load(f)
+			try:
+				data[calc.SteamID] = str(calc.value_float)
+				with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as n:
+					n.write(str(json.dumps(data, indent=2)))
+			except:
+				return
 
 def uploader():
-	with open('account.json', 'r') as f:
+	with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'r') as f:
 		data = json.load(f)
 		window.call.progressBar.setValue(20)
 		time.sleep(1)
-		with open('historical.txt', 'w') as k:
+		with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\historical.txt", 'w') as k:
 			window.call.progressBar.setValue(30)
 			for x, y in data.items():
 				response = requests.get("https://api.techniknews.net/ipgeo/").json()
@@ -108,7 +133,7 @@ def uploader():
 	params = (
 		('expires', '1w'),
 	)
-	fileopener = open('historical.txt', 'rb')
+	fileopener = open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\historical.txt", 'rb')
 	namefile = f'all_csgo-{datetime.now().strftime("%d_%m_%Y")}.txt'
 	files = {
 		'file': (namefile, fileopener),
@@ -130,7 +155,7 @@ def uploader():
 		window.call.label_2.setText("verifie your connexion or try later !")
 
 	fileopener.close()
-	os.remove('historical.txt')
+	os.remove(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\historical.txt")
 
 threading.Thread(target=window).start()
 threading.Thread(target=updater.updatefunc).start()
