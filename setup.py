@@ -7,7 +7,7 @@ base = None
 if (sys.platform == "win32"):
     base = "Win32GUI"    # Tells the build script to hide the console.
 
-includefiles = ["gui.ui", "config.json", "account.json"]
+includefiles = ["gui.ui", "config.json"]
 packages = ['queue', 'tkinter', 'base64']
 
 with open('config.json', 'r') as f:
