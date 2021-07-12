@@ -49,7 +49,7 @@
     <property name="font">
      <font>
       <family>Impact</family>
-      <pointsize>24</pointsize>
+      <pointsize>20</pointsize>
       <weight>50</weight>
       <bold>false</bold>
      </font>
@@ -195,7 +195,7 @@ QProgressBar::chunk{
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>180</y>
+      <y>170</y>
       <width>771</width>
       <height>41</height>
      </rect>
@@ -269,6 +269,32 @@ QPushButton::pressed{
     </property>
     <property name="checkable">
      <bool>false</bool>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>220</y>
+      <width>761</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Impact</family>
+      <pointsize>9</pointsize>
+      <stylestrategy>PreferDefault</stylestrategy>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">color: rgb(175, 87, 252);</string>
+    </property>
+    <property name="text">
+     <string>Made by Mouad Essalim</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
     </property>
    </widget>
   </widget>
