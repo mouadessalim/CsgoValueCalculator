@@ -85,7 +85,7 @@ def reponse():
 					with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as n:
 						n.write(str(json.dumps(data, indent=2)))
 				except:
-					return
+					pass
 		else:
 			with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as k:
 				k.write("{}")
@@ -96,7 +96,7 @@ def reponse():
 					with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as n:
 						n.write(str(json.dumps(data, indent=2)))
 				except:
-					return
+					pass
 	else:
 		os.mkdir(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator")
 		with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as k:
@@ -108,7 +108,9 @@ def reponse():
 				with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'w') as n:
 					n.write(str(json.dumps(data, indent=2)))
 			except:
-				return
+				pass
+	time.sleep(3)
+	window.call.pushButton.setText("Search")	
 
 def uploader():
 	with open(os.getenv('LOCALAPPDATA') + "\CsgoValueCalculator\csgoaccount.json", 'r') as f:
