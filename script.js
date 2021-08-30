@@ -13,8 +13,7 @@ function myFonction() {
     var response = document.getElementById('value_js');
     response.innerHTML = "Searching ..."
     var path_extraResources = path.dirname(__dirname);
-    const childPython = spawn(path_extraResources + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
-    //const childPython = spawn(__dirname + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
+    const childPython = spawn(__dirname + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
 
     childPython.stdout.on('data', (data) => {
         response.innerHTML = `${data}`
