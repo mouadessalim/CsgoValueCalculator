@@ -4,9 +4,7 @@
   "description": "calculate any Steam Csgo Inventory just with SteamID",
   "main": "app.js",
   "scripts": {
-    "start": "electron .",
-    "build": "electron-builder",
-    "publish": "electron-builder --win -p always"
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -32,39 +30,6 @@
   "devDependencies": {
     "electron": "^13.1.9",
     "electron-builder": "^22.11.7"
-  },
-  "build": {
-    "appId": "com.mouadessalim.csgovaluecalculator",
-    "productName": "CsgoValueCalculator",
-    "copyright": "Copyright © 2021 Mouad Essalim",
-    "files": ["app.js", "index.html", "style.css", "script.js", "preload.js"],
-    "icon": "icon.ico",
-    "target": "NSIS",
-    "extraResources": [
-      {
-        "from": "./extraResources/",
-        "to": "extraResources",
-        "filter": [
-          "**/*"
-        ]
-      }
-
-    ],
-    "publish": [{
-      "provider": "github",
-      "owner": "mouadessalim",
-      "repo": "CsgoValueCalculator",
-      "token": "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"
-  }],
-    "nsis": {
-      "oneClick": false,
-      "deleteAppDataOnUninstall": true,
-      "perMachine": false,
-      "license": "LICENSE.txt",
-      "installerIcon": "icon.ico",
-      "uninstallerIcon": "icon.ico",
-      "installerHeader": "icon.ico"
-    }
   },
   "dependencies": {
     "electron-updater": "^4.3.9"
