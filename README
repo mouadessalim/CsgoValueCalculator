@@ -1,0 +1,18 @@
+# CsgoValueCalculator
+With this python application you can calculate any **Steam Csgo Inventory** 
+- Setup
+- Live Demo
+## Setup
+```
+$ git clone https://github.com/mouadessalim/CsgoValueCalculator.git
+$ cd extraResource/backend
+$ pip install bs4
+$ pip install requests
+$ pip install cx_Freeze
+$ py setup.py build
+```
+And it's done ! you can execute `npm run start`
+
+## Live Demo (With Installer [.EXE])
+You can also download the final version executable in [the latest release](https://github.com/mouadessalim/CsgoValueCalculator/releases/latest).
+> Any troubleshouting ? Contact me on my [website](https://mouadessalim.xyz/#contact) or ask community in **Issues**
