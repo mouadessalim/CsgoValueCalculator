@@ -51,7 +51,7 @@ function createWindow () {
     );
   });
   autoUpdater.on('update-downloaded', info => {
-    sendStatusToWindow('Update downloaded! When restarting the app, it will update.');
+    sendStatusToWindow('Update downloaded! When launching the app the next time, it will update.');
   });
 
   // Open the DevTools.
