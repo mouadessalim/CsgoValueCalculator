@@ -1,30 +1,58 @@
 import requests
-from bs4 import BeautifulSoup
-import json
 from sys import argv
 import socket 
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 def main_():
     SteamID = argv[1]
     if SteamID.isdigit() and int(SteamID) > 9999999999999999:
         valid_response = requests.get(f"https://www.steamidfinder.com/lookup/{SteamID}")
         if valid_response.ok:
-            response = requests.get("https://csgopedia.com/inventory-value/?profiles=" + SteamID)
-            if response.ok:
-                page = BeautifulSoup(response.text, features="html.parser")
-                rank = page.find("table", class_="table-cell")
-                value = rank.find_all("strong")[1].get_text()
-                value_float = float(value[1:])
+            try:
+                chrome_params = Options()
+                chrome_params.headless = True
+                driver1 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+                driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
+                element = WebDriverWait(driver1, 10).until(
+                    EC.presence_of_element_located((By.XPATH, "/html/body//div[@id='info']//p"))
+                )
+                data_float = float(element.text[:-1])
                 responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
-                if responseip['currency'] == "USD":
-                    print(str(value_float) + " USD 💰")
+                if responseip['currency'] == "EUR":
+                    print(str(data_float) + " EUR")
                 else:
-                    response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/{responseip['currency'].lower()}.json").json()
-                    conversion = response[responseip['currency'].lower()] * value_float
+                    response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{responseip['currency'].lower()}.json").json()
+                    conversion = response[responseip['currency'].lower()] * data_float
                     conversion_finished = round(conversion, 2)
-                    print(str(conversion_finished) + " " + responseip['currency'] + " 💰")
-            else:
-                print("Server down ! Please retry later.")          
+                    print(str(conversion_finished) + " " + responseip['currency'])
+            except:
+                try:
+                    driver2 = webdriver.Chrome(executable_path='chromedriver.exe')
+                    driver2.set_window_position(-10000,0)
+                    driver2.set_window_size(0, 0)
+                    driver2.get(f"https://csgobackpack.net//?nick={SteamID}")
+                    element = WebDriverWait(driver2, 10).until(
+                        EC.presence_of_element_located((By.XPATH, "/html/body//div[@id='info']//p"))
+                    )
+                    data_float = float(element.text[:-1])
+                    responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
+                    if responseip['currency'] == "EUR":
+                        print(str(data_float) + " EUR")
+                    else:
+                        response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{responseip['currency'].lower()}.json").json()
+                        conversion = response[responseip['currency'].lower()] * data_float
+                        conversion_finished = round(conversion, 2)
+                        print(str(conversion_finished) + " " + responseip['currency'])
+                except:
+                    print("Server Down, please retry later !")
+                finally:
+                    driver2.quit()
+            finally:
+                driver1.quit()
         else:
             print("This SteamID doesn't exist")
     else:
