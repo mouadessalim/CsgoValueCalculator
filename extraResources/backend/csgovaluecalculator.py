@@ -65,7 +65,33 @@ def test_connexion():
     except:
         return False
 
-if test_connexion() == True:
+def get_version():
+    try:
+        chrome_params = Options()
+        chrome_params.headless = True
+        driver3 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+        if 'browserVersion' in driver3.capabilities:
+            v = driver3.capabilities['browserVersion']
+            
+            if v[:2] == "93":
+                return True
+            else:
+                return False
+        else:
+            old_v = driver3.capabilities['version']
+            if old_v[:2] == "93":
+                return True
+            else:
+                return False
+    except:
+        return False
+    finally:
+        driver3.quit()
+
+if test_connexion() and get_version():
     main_()
 else:
-    print('No connexion found! Please check it.')
+    if test_connexion():
+        print("Verifie that Chrome 93 is installed !")
+    else:
+        print("No connexion found, please check it")
