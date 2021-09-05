@@ -13,9 +13,9 @@ function myFonction() {
     var response = document.getElementById('value_js');
     response.innerHTML = "Searching ..."
     var path_extraResources = path.dirname(__dirname);
-    const childPython = spawn(path_extraResources + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
+    //const childPython = spawn(path_extraResources + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
     //const childPython = spawn(__dirname + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
-    //const childPython = spawn("python", ["csgovaluecalculator.py", input_value.value]);
+    //const childPython = spawn("python", ["extraResources\\backend\\csgovaluecalculator.py", input_value.value]);
 
     childPython.stdout.on('data', (data) => {
         response.innerHTML = `${data}`
@@ -23,6 +23,7 @@ function myFonction() {
 
     childPython.stderr.on('data', (data) => {
         console.error(`stderr: ${data}`);
+        response.innerHTML = `A fatal error was detected. Please restart the app. `
     });
 
 }
