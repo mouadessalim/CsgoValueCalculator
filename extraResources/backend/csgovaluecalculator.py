@@ -1,5 +1,6 @@
 import requests
 from sys import argv
+import os
 import socket 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options 
@@ -14,7 +15,6 @@ def main_():
         if valid_response.ok:
             try:
                 chrome_params = Options()
-                #chrome_params.headless = True
                 chrome_params.add_argument("--window-size=0,0")
                 chrome_params.add_argument("--log-level=3")
                 driver1 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
@@ -34,6 +34,7 @@ def main_():
                     print(str(conversion_finished) + " " + responseip['currency'])
             except:
                 print("Server Down, please retry later !")
+
             finally:
                 driver1.quit()
         else:
@@ -68,12 +69,18 @@ def get_version():
     except:
         return False
     finally:
-        driver3.quit()
+        try:
+           driver3.quit() 
+        except:
+            pass
 
 if test_connexion() and get_version():
     main_()
 else:
     if test_connexion():
-        print("Verifie that Chrome 93 is installed !")
+        if os.path.exists('C:\Program Files\Google\Chrome\Application\chrome.exe') or os.path.exists('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'):
+            print('Chrome detected, but you need to update it to version 93')
+        else:
+            print("Chrome not detected, please install it")
     else:
         print("No connexion found, please check it")
