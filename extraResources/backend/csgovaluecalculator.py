@@ -17,7 +17,7 @@ def main_():
                 chrome_params = Options()
                 chrome_params.add_argument("--window-size=0,0")
                 chrome_params.add_argument("--log-level=3")
-                driver1 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+                driver1 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', chrome_options=chrome_params)
                 driver1.set_window_position(-10000,0)
                 driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
                 element = WebDriverWait(driver1, 10).until(
