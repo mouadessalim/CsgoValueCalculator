@@ -8,7 +8,7 @@ To run the project in development mode you need to install:
 - Chrome v93
 
 ### Modules and librairies
-You also need to install some python module like:
+You also need to install some python and node module like:
 - requests `pip install requests`
 - selenium `pip install selenium`
 - ChromeDriver v93 - You can found it [here](https://chromedriver.chromium.org/home)
