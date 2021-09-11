@@ -28,31 +28,31 @@ function createWindow () {
     require('electron').shell.openExternal(url);
   });
 
-  const sendStatusToWindow = (text) => {
-    if (mainWindow) {
-      mainWindow.webContents.send('message', text);
-    }
-  };
+  //const sendStatusToWindow = (text) => {
+  //  if (mainWindow) {
+  //    mainWindow.webContents.send('message', text);
+  //  }
+  //};
 
-  autoUpdater.checkForUpdates();
+  //autoUpdater.checkForUpdates();
 
-  autoUpdater.on('checking-for-update', () => {
-    sendStatusToWindow('Checking for update...');
-  });
-  autoUpdater.on('update-available', info => {
-    sendStatusToWindow('A new Update available! Downloading...');
-  });
-  autoUpdater.on('error', err => {
-    sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
-  });
-  autoUpdater.on('download-progress', progressObj => {
-    sendStatusToWindow(
-      ` Downloaded: ${progressObj.percent}%`
-    );
-  });
-  autoUpdater.on('update-downloaded', info => {
-    sendStatusToWindow('Update downloaded! When launching the app the next time, it will update.');
-  });
+  //autoUpdater.on('checking-for-update', () => {
+  //  sendStatusToWindow('Checking for update...');
+  //});
+  //autoUpdater.on('update-available', info => {
+  //  sendStatusToWindow('A new Update available! Downloading...');
+  //});
+  //autoUpdater.on('error', err => {
+  //  sendStatusToWindow(`Error in auto-updater: ${err.toString()}`);
+  //});
+  //autoUpdater.on('download-progress', progressObj => {
+  //  sendStatusToWindow(
+  //    ` Downloaded: ${progressObj.percent}%`
+  //  );
+  //});
+  //autoUpdater.on('update-downloaded', info => {
+  //  sendStatusToWindow('Update downloaded! When launching the app the next time, it will update.');
+  //});
 
   // Open the DevTools.
   //mainWindow.webContents.openDevTools();
