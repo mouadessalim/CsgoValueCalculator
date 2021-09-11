@@ -1,12 +1,12 @@
-const { ipcRenderer } = require('electron');
+//const { ipcRenderer } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
 
-ipcRenderer.on('message', function (event, text) {
-    var response = document.getElementById('value_js');
-    console.log(text)
-    response.innerHTML = text;
-});
+//ipcRenderer.on('message', function (event, text) {
+//    var response = document.getElementById('value_js');
+//    console.log(text)
+//    response.innerHTML = text;
+//});
 
 function myFonction() {
     var input_value = document.getElementById('input_SteamID');
