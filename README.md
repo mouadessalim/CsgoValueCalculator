@@ -25,4 +25,7 @@ After installing all dependencies, you need to specify path of ChromeDriver to c
 
 ## Live Demo
 You can download the build version from my [website](https://mouadessalim.xyz/#wkaid) or from [release](https://github.com/mouadessalim/CsgoValueCalculator/releases).
+è
+### SteamID
+if you don't know what is you SteamID you can get it [here](https://www.steamidfinder.com/), you need to ut your profile link to get your SteamID
 > Any troubleshouting ? Contact me from my [website](https://mouadessalim.xyz/#contact) or ask community in **Issues**
