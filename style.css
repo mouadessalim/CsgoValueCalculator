@@ -48,7 +48,7 @@ input:focus {
     outline: none;
 }
 input::placeholder {
-    font-size: 20px;
+    font-size: 16px;
 }
 h4 {
     position: absolute; 
