@@ -11,6 +11,7 @@ var response = document.getElementById('value_js');
 //});
 
 function pythcall(x) {
+    var path_extraResources = path.dirname(__dirname);
     const childPython = spawn(path_extraResources + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
     //const childPython = spawn(__dirname + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
     //const childPython = spawn("python", ["csgovaluecalculator.py", input_value.value]);
@@ -26,7 +27,6 @@ function pythcall(x) {
 
 function myFonction() {
     response.innerHTML = "Searching, please wait...";
-    var path_extraResources = path.dirname(__dirname);
     if(isNaN(input_value.value)){ 
         if(input_value.value.substring(0, 4) == "http"){
             response.innerHTML = "SteamID profile link detected, please wait...";
