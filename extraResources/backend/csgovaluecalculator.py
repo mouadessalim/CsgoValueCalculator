@@ -9,38 +9,34 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 def main_():
-    SteamID = argv[1]
-    if SteamID.isdigit() and int(SteamID) > 9999999999999999:
-        valid_response = requests.get(f"https://www.steamidfinder.com/lookup/{SteamID}")
-        if valid_response.ok:
-            try:
-                chrome_params = Options()
-                chrome_params.add_argument("--window-size=0,0")
-                chrome_params.add_argument("--log-level=3")
-                driver1 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', chrome_options=chrome_params)
-                driver1.set_window_position(-10000,0)
-                driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
-                element = WebDriverWait(driver1, 10).until(
-                    EC.presence_of_element_located((By.XPATH, "/html/body//div[@id='info']//p"))
-                )
-                data_float = float(element.text[:-1])
-                responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
-                if responseip['currency'] == "EUR":
-                    print(str(data_float) + " EUR")
-                else:
-                    response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{responseip['currency'].lower()}.json").json()
-                    conversion = response[responseip['currency'].lower()] * data_float
-                    conversion_finished = round(conversion, 2)
-                    print(str(conversion_finished) + " " + responseip['currency'])
-            except:
-                print("Server Down, please retry later !")
+    valid_response = requests.get(f"https://www.steamidfinder.com/lookup/{SteamID}")
+    if valid_response.ok:
+        try:
+            chrome_params = Options()
+            chrome_params.add_argument("--window-size=0,0")
+            chrome_params.add_argument("--log-level=3")
+            driver1 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+            driver1.set_window_position(-10000,0)
+            driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
+            element = WebDriverWait(driver1, 10).until(
+                EC.presence_of_element_located((By.XPATH, "/html/body//div[@id='info']//p"))
+            )
+            data_float = float(element.text[:-1])
+            responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
+            if responseip['currency'] == "EUR":
+                print(str(data_float) + " EUR")
+            else:
+                response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{responseip['currency'].lower()}.json").json()
+                conversion = response[responseip['currency'].lower()] * data_float
+                conversion_finished = round(conversion, 2)
+                print(str(conversion_finished) + " " + responseip['currency'])
+        except:
+            print("Server Down, please retry later !")
 
-            finally:
-                driver1.quit()
-        else:
-            print("This SteamID doesn't exist")
+        finally:
+            driver1.quit()
     else:
-        print("Format not valid !")
+        print("This SteamID doesn't exist or the value of inventory is too low")
 
 def test_connexion():
     try:
@@ -75,7 +71,24 @@ def get_version():
             pass
 
 if test_connexion() and get_version():
-    main_()
+    if argv[1].isdigit() and int(argv[1]) > 9999999999999999:
+        SteamID = argv[1]
+        main_()
+    else:
+        if not argv[1].isdigit():
+            chrome_params = Options()
+            chrome_params.headless = True
+            driver4 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+            driver4.get("https://steamid.io/")
+            try:
+                driver4.find_element(By.XPATH, "//input[@id='input']").send_keys(argv[1])
+                driver4.find_element(By.XPATH, "//button[@class='btn btn-danger input-lg']").click()
+                SteamID = driver4.find_element(By.XPATH, "//dd[@class='value short'][3]/a").text
+                main_()
+            except:
+                print('Steam profile link not found !')
+        else:
+            print("Format not valid!")
 else:
     if test_connexion():
         if os.path.exists('C:\Program Files\Google\Chrome\Application\chrome.exe') or os.path.exists('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'):
