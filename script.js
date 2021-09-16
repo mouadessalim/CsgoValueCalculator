@@ -21,15 +21,25 @@ function pythcall(x) {
     });
 
     childPython.stderr.on('data', (data) => {
-        response.innerHTML = `A fatal error was detected. Please restart the app. `
+        response.innerHTML = `A fatal error was detected. if this happen many of time, please contact me.`;
+        fs.writeFileSync(process.env.APPDATA + "\\csgo-value-calculator\\logs.txt", `${data}`);
     });
 }
 
 function myFonction() {
     response.innerHTML = "Searching, please wait...";
     if(isNaN(input_value.value)){ 
-        if(input_value.value.substring(0, 4) == "http"){
-            response.innerHTML = "SteamID profile link detected, please wait...";
+        if(input_value.value.substring(0, 29) == "http://steamcommunity.com/id/"){
+            response.innerHTML = "Steam profile custom link detected, please wait...";
+            pythcall();
+        }else if(input_value.value.substring(0, 30) == "https://steamcommunity.com/id/"){
+            response.innerHTML = "Steam profile custom link detected, please wait...";
+            pythcall();
+        }else if(input_value.value.substring(0, 35) == "http://steamcommunity.com/profiles/"){
+            response.innerHTML = "Steam profile link detected, please wait...";
+            pythcall();
+        }else if(input_value.value.substring(0, 36) == "https://steamcommunity.com/profiles/"){
+            response.innerHTML = "Steam profile link detected, please wait...";
             pythcall();
         }else{
             response.innerHTML = "Format not valid: " + input_value.value;
