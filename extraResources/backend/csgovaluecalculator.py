@@ -8,6 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 def main_():
     valid_response = requests.get(f"https://www.steamidfinder.com/lookup/{SteamID}")
     if valid_response.ok:
@@ -31,17 +32,29 @@ def main_():
                 conversion_finished = round(conversion, 2)
                 print(str(conversion_finished) + " " + responseip['currency'])
         except:
-            print("Server Down, please retry later !")
-
+            print("This inventory is private or user doesn't have any items in inventory")
         finally:
             driver1.quit()
+        
     else:
-        print("This SteamID doesn't exist or the value of inventory is too low")
+        print("This SteamID doesn't exist.")
 
 def test_connexion():
     try:
         socket.create_connection(('google.com', 80))
         return True
+    except:
+        return False
+
+def check_server():
+    try:
+        socket.create_connection(('csgobackpack.net', 80))
+        socket.create_connection(('cdn.jsdelivr.net', 80))
+        socket.create_connection(('steamidfinder.com', 80))
+        if requests.get("https://api.techniknews.net/ipgeo/").ok:
+            return True
+        else:
+            return False
     except:
         return False
 
@@ -70,7 +83,7 @@ def get_version():
         except:
             pass
 
-if test_connexion() and get_version():
+if test_connexion() and get_version() and check_server():
     if argv[1].isdigit() and int(argv[1]) > 9999999999999999:
         SteamID = argv[1]
         main_()
@@ -90,10 +103,12 @@ if test_connexion() and get_version():
         else:
             print("Format not valid!")
 else:
-    if test_connexion():
+    if test_connexion() and check_server():
         if os.path.exists('C:\Program Files\Google\Chrome\Application\chrome.exe') or os.path.exists('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'):
             print('Chrome detected, but you need to update it to version 93')
         else:
             print("Chrome not detected, please install it")
+    elif test_connexion():
+        print('Server down, please retry later.')
     else:
-        print("No connexion found, please check it")
+        print("No connexion found, please check it.")
