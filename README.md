@@ -18,6 +18,8 @@ You also need to install some python and node module like:
 After installing all dependencies, you need to specify path of ChromeDriver to csgovaluecalculator.py
 ```python
  driver1 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', chrome_options=chrome_params)
+ driver3 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', chrome_options=chrome_params)
+ driver4 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', chrome_options=chrome_params)
 ```
 **It's done you can run the project with `$ npm run start` in the cmd or powershell 🎉**
 ## Supported Platforms
