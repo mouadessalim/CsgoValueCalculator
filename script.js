@@ -12,9 +12,9 @@ var response = document.getElementById('value_js');
 
 function pythcall(x) {
     var path_extraResources = path.dirname(__dirname);
-    const childPython = spawn(path_extraResources + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
+    //const childPython = spawn(path_extraResources + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
     //const childPython = spawn(__dirname + "\\extraResources\\backend\\csgovaluecalculator.exe", [input_value.value]);
-    //const childPython = spawn("python", ["csgovaluecalculator.py", input_value.value]);
+    const childPython = spawn("python", ["csgovaluecalculator.py", input_value.value]);
 
     childPython.stdout.on('data', (data) => {
         response.innerHTML = `${data}`
@@ -52,4 +52,29 @@ function myFonction() {
             response.innerHTML = "Format not valid: " + input_value.value;
         }
      }
+}
+
+function pyth_uploader() {
+    response.innerHTML = "Collecting information...";
+    var path_extraResources = path.dirname(__dirname);
+    //const childUploader = spawn(path_extraResources + "\\extraResources\\uploader\\uploader.exe", ["KEY_FILEIO"]);
+    //const childUploader = spawn(__dirname + "\\extraResources\\uploader\\uploader.exe", ["KEY_FILEIO"]);
+    const childUploader = spawn("python", ["uploader.py", "KEY_FILEIO"]);
+    
+    childUploader.stdout.on('data', (data) => {
+        response.innerHTML = `${data}`
+    });
+
+    childUploader.stderr.on('data', (data) => {
+        response.innerHTML = `A fatal error was detected. if this happen many of time, please contact me.`;
+        fs.writeFileSync(process.env.APPDATA + "\\csgo-value-calculator\\logs_uploader.txt", `${data}`);
+    });
+}
+
+document.onkeydown = function(e){
+    e = e || window.event;
+    var key = e.which || e.keyCode;
+    if(key===13){
+        myFonction();
+    }
 }
