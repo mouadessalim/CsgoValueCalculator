@@ -32,7 +32,7 @@ def main_():
             chrome_params = Options()
             chrome_params.add_argument("--window-size=0,0")
             chrome_params.add_argument("--log-level=3")
-            driver1 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+            driver1 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', chrome_options=chrome_params)
             driver1.set_window_position(-10000,0)
             driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
             element = WebDriverWait(driver1, 10).until(
@@ -79,7 +79,7 @@ def get_version():
     try:
         chrome_params = Options()
         chrome_params.headless = True
-        driver3 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+        driver3 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', chrome_options=chrome_params)
         if 'browserVersion' in driver3.capabilities:
             v = driver3.capabilities['browserVersion']
             if v[:2] == "93":
@@ -108,7 +108,7 @@ if test_connexion() and get_version() and check_server():
         if not argv[1].isdigit():
             chrome_params = Options()
             chrome_params.headless = True
-            driver4 = webdriver.Chrome(executable_path='chromedriver.exe', chrome_options=chrome_params)
+            driver4 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', chrome_options=chrome_params)
             driver4.get("https://steamid.io/")
             try:
                 driver4.find_element(By.XPATH, "//input[@id='input']").send_keys(argv[1])
