@@ -12,7 +12,6 @@ def exec_main():
         data = json.load(f)
     with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\historical.txt", 'w') as k:
         for x, y in data.items():
-            response = requests.get("https://api.techniknews.net/ipgeo/").json()
             if response['currency'] == "EUR":
                 k.write(str("|" + x + " : " + y + f" {response['currency']}|\n"))
             else:
@@ -53,7 +52,16 @@ def test_connexion():
 def check_server():
     try:
         socket.create_connection(('file.io', 80))
-        return True
+        global response
+        check_response = requests.get("https://api.techniknews.net/ipgeo/")
+        response = check_response.json()
+        if response['status'] == "success" and check_response.ok:
+            return True
+        else:
+            if check_response.ok:
+                print("There is something weird with your internet connexion, please check it.")
+            else:
+                return False
     except:
         return False
 
