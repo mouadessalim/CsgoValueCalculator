@@ -4,6 +4,7 @@ from sys import argv
 import sys
 import os
 import socket 
+import threading
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options 
 from selenium.webdriver.common.by import By
@@ -17,7 +18,14 @@ def writter(s, v):
     if os.path.exists(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json"):
         with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
             data = json.load(f)
-            data[s] = str(v)
+            data[s] = {}
+            data[s]['value'] = str(v)
+            data[s]['custom_URL'] = str(get_info.custom_URL)
+            data[s]['profile_state'] = str(get_info.profile_state)
+            data[s]['profile_created'] = str(get_info.profile_created)
+            data[s]['name'] = str(get_info.name_)
+            data[s]['location'] = str(get_info.location_)
+            data[s]['profile_url'] = str(get_info.profile_url)
             with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as n:
                 n.write(str(json.dumps(data, indent=2)))
     else:
@@ -25,34 +33,74 @@ def writter(s, v):
             k.write("{}")
         with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
             data = json.load(f)
-            data[s] = str(v)
+            data[s] = {}
+            data[s]['value'] = str(v)
+            data[s]['custom_URL'] = str(get_info.custom_URL)
+            data[s]['profile_state'] = str(get_info.profile_state)
+            data[s]['profile_created'] = str(get_info.profile_created)
+            data[s]['name'] = str(get_info.name_)
+            data[s]['location'] = str(get_info.location_)
+            data[s]['profile_url'] = str(get_info.profile_url)
             with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as n:
                 n.write(str(json.dumps(data, indent=2)))
 
+def get_info():
+    global get_info_status
+    try:
+        chrome_params = Options()
+        chrome_params.add_argument("--log-level=3")
+        chrome_params.headless = True
+        driver2 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
+        driver2.get(f"https://steamid.io/lookup/{SteamID}")
+        try:
+            get_info.custom_URL = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[4]/a").text
+        except:
+            get_info.custom_URL = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[4]").text
+        get_info.profile_state = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[5]/span").text
+        get_info.profile_created = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[6]").text
+        get_info.name_ = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[7]").text
+        try:
+            get_info.location_ = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[8]/a").text
+        except:
+            get_info.location_ = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[8]").text
+        get_info.profile_url = driver2.find_element(By.XPATH, "//*[@id='go2steamcom']").text
+        get_info_status = True
+    except:
+        get_info_status = False
+    finally:
+        try:
+            driver2.quit()
+        except:
+            pass
+
 def main_():
+    global main_status
     valid_response = requests.get(f"https://www.steamidfinder.com/lookup/{SteamID}")
     if valid_response.ok:
         try:
             chrome_params = Options()
             chrome_params.add_argument("--window-size=0,0")
             chrome_params.add_argument("--log-level=3")
-            driver1 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', chrome_options=chrome_params)
+            driver1 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
             driver1.set_window_position(-10000,0)
             driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
             element = WebDriverWait(driver1, 10).until(
                 EC.presence_of_element_located((By.XPATH, "/html/body//div[@id='info']//p"))
             )
+            global data_float
             data_float = float(element.text[:-1])
             responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
             if responseip['currency'] == "EUR":
-                writter(SteamID, str(data_float))
+                #writter(SteamID, str(data_float))
                 print(str(data_float) + " EUR")
+                main_status = True
             else:
                 response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{responseip['currency'].lower()}.json").json()
                 conversion = response[responseip['currency'].lower()] * data_float
                 conversion_finished = round(conversion, 2)
-                writter(SteamID, str(data_float))
+                #writter(SteamID, str(data_float))
                 print(str(conversion_finished) + " " + responseip['currency'])
+                main_status = True
         except:
             print("This inventory is private or user doesn't have any items in inventory")
         finally:
@@ -83,7 +131,7 @@ def get_version():
     try:
         chrome_params = Options()
         chrome_params.headless = True
-        driver3 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', chrome_options=chrome_params)
+        driver3 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
         if 'browserVersion' in driver3.capabilities:
             v = driver3.capabilities['browserVersion']
             if v[:2] == version_chromedriver:
@@ -104,23 +152,35 @@ def get_version():
         except:
             pass
 
+def start_threads():
+    th1 = threading.Thread(target=main_())
+    th2 = threading.Thread(target=get_info())
+    th1.start()
+    th2.start()
+    th1.join()
+    th2.join()
+    if 'main_status' and 'get_info_status' in globals():
+        if main_status and get_info_status:
+            writter(SteamID, data_float)
+
 def verification():
     if test_connexion() and get_version() and check_server():
         if argv[1].isdigit() and int(argv[1]) > 9999999999999999:
             global SteamID
             SteamID = argv[1]
-            main_()
+            start_threads()
         else:
             if not argv[1].isdigit():
                 chrome_params = Options()
+                chrome_params.add_argument("--log-level=3")
                 chrome_params.headless = True
-                driver4 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', chrome_options=chrome_params)
+                driver4 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
                 driver4.get("https://steamid.io/")
                 try:
                     driver4.find_element(By.XPATH, "//input[@id='input']").send_keys(argv[1])
                     driver4.find_element(By.XPATH, "//button[@class='btn btn-danger input-lg']").click()
                     SteamID = driver4.find_element(By.XPATH, "//dd[@class='value short'][3]/a").text
-                    main_()
+                    start_threads()
                 except:
                     print('Steam profile link not found !')
             else:
