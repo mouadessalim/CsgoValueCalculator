@@ -11,12 +11,42 @@ def exec_main():
     with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
         data = json.load(f)
     with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\historical.txt", 'w') as k:
+        k.write("  /$$$$$$                           /$$    /$$        /$$                   /$$$$$$          /$$                  /$$           /$$                      \n")
+        k.write(" /$$__  $$                         | $$   | $$       | $$                  /$$__  $$        | $$                 | $$          | $$                      \n")
+        k.write("| $$  \__//$$$$$$$ /$$$$$$  /$$$$$$| $$   | $$/$$$$$$| $$/$$   /$$ /$$$$$$| $$  \__/ /$$$$$$| $$ /$$$$$$$/$$   /$| $$ /$$$$$$ /$$$$$$   /$$$$$$  /$$$$$$ \n")
+        k.write("| $$     /$$_____//$$__  $$/$$__  $|  $$ / $$|____  $| $| $$  | $$/$$__  $| $$      |____  $| $$/$$_____| $$  | $| $$|____  $|_  $$_/  /$$__  $$/$$__  $$\n")
+        k.write("| $$    |  $$$$$$| $$  \ $| $$  \ $$\  $$ $$/ /$$$$$$| $| $$  | $| $$$$$$$| $$       /$$$$$$| $| $$     | $$  | $| $$ /$$$$$$$ | $$   | $$  \ $| $$  \__/\n")
+        k.write("| $$    $\____  $| $$  | $| $$  | $$ \  $$$/ /$$__  $| $| $$  | $| $$_____| $$    $$/$$__  $| $| $$     | $$  | $| $$/$$__  $$ | $$ /$| $$  | $| $$      \n")
+        k.write("|  $$$$$$/$$$$$$$|  $$$$$$|  $$$$$$/  \  $/ |  $$$$$$| $|  $$$$$$|  $$$$$$|  $$$$$$|  $$$$$$| $|  $$$$$$|  $$$$$$| $|  $$$$$$$ |  $$$$|  $$$$$$| $$      \n")
+        k.write(" \______|_______/ \____  $$\______/    \_/   \_______|__/\______/ \_______/\______/ \_______|__/\_______/\______/|__/\_______/  \___/  \______/|__/      \n")
+        k.write("                  /$$  \ $$                                                                                                                              \n")
+        k.write("                 |  $$$$$$/                                                                                                                              \n")
+        k.write("                  \______/                                                                                                                               \n")
+
         for x, y in data.items():
             if response['currency'] == "EUR":
-                k.write(str("|" + x + " : " + y + f" {response['currency']}|\n"))
+                k.write("------------------------------------------------------------------\n")
+                k.write(str(f"Account name: {y['name']}\n"))
+                k.write(str(f"Profile inventory value: {y['value']} EUR\n"))
+                k.write(str(f"Steam ID64: {x}\n"))
+                k.write(str(f"Custom URL: {y['custom_URL']}\n"))
+                k.write(str(f"Profile state: {y['profile_state']}\n"))
+                k.write(str(f"Profile created: {y['profile_created']}\n"))
+                k.write(str(f"Profile location: {y['location']}\n"))
+                k.write(str(f"Profile URL: {y['profile_url']}\n"))
+                k.write("------------------------------------------------------------------\n")
             else:
                 response_c = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{response['currency'].lower()}.json").json()
-                k.write(str("|" + x + " = " + f"{round(float(response_c[response['currency'].lower()]) * float(y), 2)} {response['currency']}|\n"))
+                k.write("------------------------------------------------------------------\n")
+                k.write(str(f"Account name: {y['name']}\n"))
+                k.write(str(f"Profile inventory value: {round(float(response_c[response['currency'].lower()]) * float(y['value']), 2)} {response['currency']}\n"))
+                k.write(str(f"Steam ID64: {x}\n"))
+                k.write(str(f"Custom URL: {y['custom_URL']}\n"))
+                k.write(str(f"Profile state: {y['profile_state']}\n"))
+                k.write(str(f"Profile created: {y['profile_created']}\n"))
+                k.write(str(f"Profile location: {y['location']}\n"))
+                k.write(str(f"Profile URL: {y['profile_url']}\n"))
+                k.write("------------------------------------------------------------------\n")
 
     params = (
         ('expires', '1w'),
