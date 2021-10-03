@@ -1,3 +1,6 @@
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/mouadessalim/CsgoValueCalculator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mouadessalim/CsgoValueCalculator/context:python)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/mouadessalim/CsgoValueCalculator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mouadessalim/CsgoValueCalculator/context:javascript)
+
 # CsgoValueCalculator
 **Calculate any Steam Csgo Inventory just with SteamID with your current currency.**
 
