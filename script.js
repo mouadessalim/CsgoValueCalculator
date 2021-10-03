@@ -1,7 +1,7 @@
 //const { ipcRenderer } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
-const path_extraResources = path.dirname(__dirname);
+const path_extraResources = path.dirname(__dirname); //lgtm [js/unused-local-variable]
 var input_value = document.getElementById('input_SteamID');
 var response = document.getElementById('value_js');
 
