@@ -2,7 +2,7 @@
 
 // Modules to control application life and create native browser window
 const { app, BrowserWindow} = require('electron')
-const { autoUpdater } = require('electron-updater');
+//const { autoUpdater } = require('electron-updater');
 const path = require('path')
 
 function createWindow () {
