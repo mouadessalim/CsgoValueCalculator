@@ -1,3 +1,5 @@
+#csgovaluecalculator.py
+
 import requests
 import json
 from sys import argv
@@ -13,35 +15,27 @@ from selenium.webdriver.support import expected_conditions as EC
 
 version_chromedriver = "94"
 
-def writter(s, v):
+def main_writter(s, v):
+    with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
+        data = json.load(f)
+        data[s] = {}
+        data[s]['value'] = str(v)
+        data[s]['custom_URL'] = str(get_info.custom_URL)
+        data[s]['profile_state'] = str(get_info.profile_state)
+        data[s]['profile_created'] = str(get_info.profile_created)
+        data[s]['name'] = str(get_info.name_)
+        data[s]['location'] = str(get_info.location_)
+        data[s]['profile_url'] = str(get_info.profile_url)
+        with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as n:
+            n.write(str(json.dumps(data, indent=2)))
+
+def writter(x, y):
     if os.path.exists(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json"):
-        with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
-            data = json.load(f)
-            data[s] = {}
-            data[s]['value'] = str(v)
-            data[s]['custom_URL'] = str(get_info.custom_URL)
-            data[s]['profile_state'] = str(get_info.profile_state)
-            data[s]['profile_created'] = str(get_info.profile_created)
-            data[s]['name'] = str(get_info.name_)
-            data[s]['location'] = str(get_info.location_)
-            data[s]['profile_url'] = str(get_info.profile_url)
-            with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as n:
-                n.write(str(json.dumps(data, indent=2)))
+        main_writter(x, y)
     else:
         with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as k:
             k.write("{}")
-        with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
-            data = json.load(f)
-            data[s] = {}
-            data[s]['value'] = str(v)
-            data[s]['custom_URL'] = str(get_info.custom_URL)
-            data[s]['profile_state'] = str(get_info.profile_state)
-            data[s]['profile_created'] = str(get_info.profile_created)
-            data[s]['name'] = str(get_info.name_)
-            data[s]['location'] = str(get_info.location_)
-            data[s]['profile_url'] = str(get_info.profile_url)
-            with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as n:
-                n.write(str(json.dumps(data, indent=2)))
+        main_writter(x, y)
 
 def get_info():
     global get_info_status
@@ -90,7 +84,6 @@ def main_():
             data_float = float(element.text[:-1])
             responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
             if responseip['currency'] == "EUR":
-                #writter(SteamID, str(data_float))
                 print(str(data_float) + " EUR")
                 main_status = True
             else:
