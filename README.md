@@ -1,7 +1,7 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/mouadessalim/CsgoValueCalculator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mouadessalim/CsgoValueCalculator/alerts/)
 
 # CsgoValueCalculator
-**Calculate any Steam Csgo Inventory just with SteamID with your current currency.**
+*Calculate any Steam Csgo Inventory just with SteamID with your current currency.*
 
 ## Dependencies
 To run the project in development mode you need to install:
@@ -11,19 +11,24 @@ To run the project in development mode you need to install:
 
 ### Modules and librairies
 You also need to install some python and node module like:
-- requests `pip install requests`
-- selenium `pip install selenium`
-- ChromeDriver v93 - You can found it [here](https://chromedriver.chromium.org/home)
-- Electron `npm install electron --save-dev`
+- requests: `pip install requests`
+- selenium: `pip install selenium`
+- ChromeDriver - You can found it [here](https://chromedriver.chromium.org/home)
+- Electron: `npm install electron --save-dev`
 
 ## Setup
-After installing all dependencies, you need to specify path of ChromeDriver to csgovaluecalculator.py
+After installing all dependencies, you need to specify path of ChromeDriver to **csgovaluecalculator.py**
 ```python
  driver1 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', options=chrome_params)
  driver3 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', options=chrome_params)
  driver4 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', options=chrome_params)
 ```
-**It's done you can run the project with `$ npm run start` in the cmd or powershell 🎉**
+If you want to use Discord feature you need to set up Discord API and WEBHOOK VARIABLE in **uploader_DS.py**
+```python
+DISCORD_JSON_API = "YOUR DISCORD SERVER API"
+DISCORD_WEBHOOK = "YOUR DISCORD WEBHOOK LINK"
+```
+If you have finished configuring everything you are ready to launch the application, can run the project with `$ npm run start` in the cmd or powershell 🎉🥳
 ## Supported Platforms
 - Windows 10 (also known as win32, for x86, x86_64, and arm64 architectures)
 
