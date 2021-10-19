@@ -107,11 +107,6 @@ def exec_discord():
     else:
         pass
 
-    allowed_mentions = {
-        "users": [response_discord['id']]
-    }   
-
-
 def test_connexion():
     try:
         socket.create_connection(('google.com', 80))
