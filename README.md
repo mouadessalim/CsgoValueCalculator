@@ -7,7 +7,7 @@
 To run the project in development mode you need to install:
 - Python (I am using [v3.8.5](https://www.python.org/downloads/release/python-385/))
 - Node Js
-- Chrome v93
+- Chrome
 
 ### Modules and librairies
 You also need to install some python and node module like:
