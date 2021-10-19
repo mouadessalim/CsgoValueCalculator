@@ -1,6 +1,7 @@
 //const { ipcRenderer } = require('electron');
 const { spawn } = require('child_process');
 const path = require('path');
+const fs = require('fs');
 const path_extraResources = path.dirname(__dirname); //lgtm [js/unused-local-variable]
 var input_value = document.getElementById('input_SteamID');
 var response = document.getElementById('value_js');
@@ -54,7 +55,7 @@ function myFonction() {
      }
 }
 
-function pyth_uploader() { //lgtm [js/unused-local-variable]
+function pyth_uploader() { 
     response.innerHTML = "Collecting information...";
     //const childUploader = spawn(path_extraResources + "\\extraResources\\uploader\\uploader.exe", ["KEY_FILEIO"]);
     //const childUploader = spawn(__dirname + "\\extraResources\\uploader\\uploader.exe", ["KEY_FILEIO"]);
@@ -70,10 +71,26 @@ function pyth_uploader() { //lgtm [js/unused-local-variable]
     });
 }
 
-document.onkeydown = function(e){
-    e = e || window.event;
-    var key = e.which || e.keyCode;
-    if(key===13){
-        myFonction();
+function pyth_discord() { 
+    response.innerHTML = "Checking Discord pseudo, please wait...";
+    //const childUploader_Discord = spawn(path_extraResources + "\\extraResources\\uploader\\uploader_DS.exe", ["KEY_DISCORD", input_value.value]);
+    //const childUploader_Discord = spawn(__dirname + "\\extraResources\\uploader\\uploader_DS.exe", ["KEY_DISCORD", input_value.value]);
+    const childUploader_Discord = spawn("python", ["uploader_DS.py", "KEY_DISCORD", input_value.value]);
+    
+    childUploader_Discord.stdout.on('data', (data) => {
+        response.innerHTML = `${data}`;
+    });
+
+    childUploader_Discord.stderr.on('data', (data) => {
+        response.innerHTML = `A fatal error was detected. if this happen many of time, please contact me.`;
+        fs.writeFileSync(process.env.APPDATA + "\\csgo-value-calculator\\logs_uploader_discord.txt", `${data}`);
+    });
+}
+
+function exec_historic() {
+    if (input_value.value) {
+        pyth_discord()
+    }else{
+        pyth_uploader()
     }
 }
