@@ -90,7 +90,6 @@ def main_():
                 response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{responseip['currency'].lower()}.json").json()
                 conversion = response[responseip['currency'].lower()] * data_float
                 conversion_finished = round(conversion, 2)
-                #writter(SteamID, str(data_float))
                 print(str(conversion_finished) + " " + responseip['currency'])
                 main_status = True
         except:
