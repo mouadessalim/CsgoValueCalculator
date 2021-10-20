@@ -1,4 +1,5 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/mouadessalim/CsgoValueCalculator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mouadessalim/CsgoValueCalculator/alerts/)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # CsgoValueCalculator
 *Calculate any Steam Csgo Inventory just with SteamID with your current currency.*
@@ -10,10 +11,14 @@ To run the project in development mode you need to install:
 - Chrome
 
 ### Modules and librairies
-You also need to install some python and node module like:
+You also need to install some Python and Node module like:
+You can install python dependencies by using`pip install -r requirements.txt` or manually by using:
 - requests: `pip install requests`
 - selenium: `pip install selenium`
+- discord-webhook: `pip install discord-webhook`
 - ChromeDriver - You can found it [here](https://chromedriver.chromium.org/home)
+
+For Node module you just need Electron for GUI:
 - Electron: `npm install electron --save-dev`
 
 ## Setup
