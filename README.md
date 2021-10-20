@@ -2,7 +2,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # CsgoValueCalculator
-*Calculate any Steam Csgo Inventory just with SteamID with your current currency.*
+*Calculate any Steam Csgo Inventory just with SteamID or Steam profile link with your current currency.*
 
 ## Dependencies
 To run the project in development mode you need to install:
