@@ -28,6 +28,7 @@ After installing all dependencies, you need to specify path of ChromeDriver to *
  driver3 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', options=chrome_params)
  driver4 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', options=chrome_params)
 ```
+### Discord Features
 If you want to use Discord feature you need to setup Discord API and WEBHOOK variable in **uploader_DS.py**
 ```python
 DISCORD_JSON_API = "YOUR DISCORD SERVER API"
