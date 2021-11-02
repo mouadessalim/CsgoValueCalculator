@@ -32,10 +32,10 @@ def exec_main():
         for x, y in data.items():
             k.write("------------------------------------------------------------------\n")
             k.write(str(f"Account name: {y['name']}\n"))
-            if response['currency'] == "EUR":
+            if currency == "EUR":
                 k.write(str(f"Profile inventory value: {y['value']} EUR\n"))
             else:
-                k.write(str(f"Profile inventory value: {round(float(response_c[response['currency'].lower()]) * float(y['value']), 2)} {response['currency']}\n"))
+                k.write(str(f"Profile inventory value: {round(float(response_c[currency.lower()]) * float(y['value']), 2)} {currency}\n"))
             k.write(str(f"Steam ID64: {x}\n"))
             k.write(str(f"Custom URL: {y['custom_URL']}\n"))
             k.write(str(f"Profile state: {y['profile_state']}\n"))
@@ -64,7 +64,7 @@ def exec_main():
             print("the app can't upload the file, please retry or contact me.")
     else:
         print("Fatal error detected when communicating with server.")
-
+    
     fileopener.close()
     os.remove(f"{os.getenv('APPDATA')}\csgo-value-calculator\historical.txt")
 
@@ -79,23 +79,21 @@ def exec_discord():
         print('Pseudo not found, please verify if you are online')
 
     if status_members:
-        content = f"@everyone Thanks you **{response_discord['members'][n]['username']}** for using my app, here are the results:"
-        allowed_mentions = {
-            "parse": ["everyone"]
-        }
-        webhook = DiscordWebhook(url=DISCORD_WEBHOOK, username='CsgoValueCalculator', avatar_url='https://pbs.twimg.com/profile_images/1389342981107318785/AL7Ha5E4_400x400.jpg', content=content, allowed_mentions=allowed_mentions)
+        content = f"Thanks you **{response_discord['members'][n]['username']}** for using my app, here are the results:"
+        #allowed_mentions = {
+        #    "parse": ["everyone"]
+        #}
+        webhook = DiscordWebhook(url=DISCORD_WEBHOOK, username='CsgoValueCalculator', avatar_url='https://pbs.twimg.com/profile_images/1389342981107318785/AL7Ha5E4_400x400.jpg', content=content)
         embed = DiscordEmbed(color='FFFFFF')
 
         with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
             data = json.load(f)
 
         for x,y in data.items():
-            if response['currency'] == "EUR":
+            if currency == "EUR":
                 value = y['value']
-                currency = "EUR"
             else:
-                value = round(float(response_c[response['currency'].lower()]) * float(y['value']), 2)
-                currency = response['currency']
+                value = round(float(response_c[currency.lower()]) * float(y['value']), 2)
             content = str(f"Profile inventory value: {value} {currency}\n") + str(f"Steam ID64: {x}\n") + str(f"Custom URL: {y['custom_URL']}\n") + str(f"Profile state: {y['profile_state']}\n") + str(f"Profile created: {y['profile_created']}\n") + str(f"Profile location: {y['location']}\n") + str(f"Profile URL: {y['profile_url']}")
             embed.add_embed_field(name=y['name'], value=content)
 
@@ -115,6 +113,7 @@ def test_connexion():
         return False
 
 def check_server():
+    global currency
     try:
         socket.create_connection(('file.io', 80))
         global response
@@ -122,11 +121,17 @@ def check_server():
         global response_c
         check_response = requests.get("https://api.techniknews.net/ipgeo/")
         response = check_response.json()
+        if check_response.ok:
+            currency = response['currency']
+        else:
+            response_ip_currency = requests.get("https://ipapi.co/currency/")
+            if response_ip_currency.ok:
+                currency = str(response_ip_currency.text)
         check_response_1 = requests.get(DISCORD_JSON_API)
         response_discord = check_response_1.json()
-        check_response_2 = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{response['currency'].lower()}.json")
+        check_response_2 = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{currency.lower()}.json")
         response_c = check_response_2.json()
-        if check_response.ok and check_response_1.ok and check_response_2.ok:
+        if check_response_1.ok and check_response_2.ok:
             return True
         else:
             return False
