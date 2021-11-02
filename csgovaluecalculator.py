@@ -12,59 +12,64 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import atexit
 
-version_chromedriver = "94"
+for file in os.listdir('.'):
+    if file.endswith(".exe") and file[:-6] == "chromedriver_":
+        version_chromedriver = str(os.path.splitext(file)[0][-2:])
+        chromedriver_path = file
+        break
+try:
+    k = version_chromedriver
+    n = chromedriver_path
+except:
+    for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend'):
+        if file.endswith(".exe") and file[:-6] == "chromedriver_":
+            version_chromedriver = str(os.path.splitext(file)[0][-2:])
+            chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}"
+            break
 
-def main_writter(s, v):
+def main_writter(s, v, aa, bb, cc, dd, ee, ff):
     with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
         data = json.load(f)
         data[s] = {}
         data[s]['value'] = str(v)
-        data[s]['custom_URL'] = str(get_info.custom_URL)
-        data[s]['profile_state'] = str(get_info.profile_state)
-        data[s]['profile_created'] = str(get_info.profile_created)
-        data[s]['name'] = str(get_info.name_)
-        data[s]['location'] = str(get_info.location_)
-        data[s]['profile_url'] = str(get_info.profile_url)
+        data[s]['custom_URL'] = str(aa)
+        data[s]['profile_state'] = str(bb)
+        data[s]['profile_created'] = str(cc)
+        data[s]['name'] = str(dd)
+        data[s]['location'] = str(ee)
+        data[s]['profile_url'] = str(ff)
         with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as n:
             n.write(str(json.dumps(data, indent=2)))
 
-def writter(x, y):
+def writter(x, y, a, b, c, d, e, f):
     if os.path.exists(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json"):
-        main_writter(x, y)
+        main_writter(x, y, a, b, c, d, e, f)
     else:
         with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'w') as k:
             k.write("{}")
-        main_writter(x, y)
+        main_writter(x, y, a, b, c, d, e, f)
 
 def get_info():
     global get_info_status
     try:
-        chrome_params = Options()
-        chrome_params.add_argument("--log-level=3")
-        chrome_params.headless = True
-        driver2 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
-        driver2.get(f"https://steamid.io/lookup/{SteamID}")
+        chromedriver_hidden.get(f"https://steamid.io/lookup/{SteamID}")
         try:
-            get_info.custom_URL = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[4]/a").text
+            get_info.custom_URL = chromedriver_hidden.find_element(By.XPATH, "//*[@id='content']/dl/dd[4]/a").text
         except:
-            get_info.custom_URL = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[4]").text
-        get_info.profile_state = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[5]/span").text
-        get_info.profile_created = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[6]").text
-        get_info.name_ = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[7]").text
+            get_info.custom_URL = chromedriver_hidden.find_element(By.XPATH, "//*[@id='content']/dl/dd[4]").text
+        get_info.profile_state = chromedriver_hidden.find_element(By.XPATH, "//*[@id='content']/dl/dd[5]/span").text
+        get_info.profile_created = chromedriver_hidden.find_element(By.XPATH, "//*[@id='content']/dl/dd[6]").text
+        get_info.name_ = chromedriver_hidden.find_element(By.XPATH, "//*[@id='content']/dl/dd[7]").text
         try:
-            get_info.location_ = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[8]/a").text
+            get_info.location_ = chromedriver_hidden.find_element(By.XPATH, "//*[@id='content']/dl/dd[8]/a").text
         except:
-            get_info.location_ = driver2.find_element(By.XPATH, "//*[@id='content']/dl/dd[8]").text
-        get_info.profile_url = driver2.find_element(By.XPATH, "//*[@id='go2steamcom']").text
+            get_info.location_ = chromedriver_hidden.find_element(By.XPATH, "//*[@id='content']/dl/dd[8]").text
+        get_info.profile_url = chromedriver_hidden.find_element(By.XPATH, "//*[@id='go2steamcom']").text
         get_info_status = True
     except:
         get_info_status = False
-    finally:
-        try:
-            driver2.quit()
-        except:
-            pass
 
 def main_():
     global main_status
@@ -74,7 +79,7 @@ def main_():
             chrome_params = Options()
             chrome_params.add_argument("--window-size=0,0")
             chrome_params.add_argument("--log-level=3")
-            driver1 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
+            driver1 = webdriver.Chrome(executable_path=chromedriver_path, options=chrome_params)
             driver1.set_window_position(-10000,0)
             driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
             element = WebDriverWait(driver1, 10).until(
@@ -94,8 +99,12 @@ def main_():
                 main_status = True
         except:
             print("This inventory is private or user doesn't have any items in inventory")
+            main_status = False
         finally:
-            driver1.quit()
+            try:
+                driver1.quit()
+            except:
+                pass
     else:
         print("This SteamID doesn't exist.")
 
@@ -120,28 +129,20 @@ def check_server():
 
 def get_version():
     try:
-        chrome_params = Options()
-        chrome_params.headless = True
-        driver3 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
-        if 'browserVersion' in driver3.capabilities:
-            v = driver3.capabilities['browserVersion']
+        if 'browserVersion' in chromedriver_hidden.capabilities:
+            v = chromedriver_hidden.capabilities['browserVersion']
             if v[:2] == version_chromedriver:
                 return True
             else:
                 return False
         else:
-            old_v = driver3.capabilities['version']
+            old_v = chromedriver_hidden.capabilities['version']
             if old_v[:2] == version_chromedriver:
                 return True
             else:
                 return False
     except:
         return False
-    finally:
-        try:
-           driver3.quit() 
-        except:
-            pass
 
 def start_threads():
     th1 = threading.Thread(target=main_())
@@ -150,11 +151,24 @@ def start_threads():
     th2.start()
     th1.join()
     th2.join()
-    if 'main_status' and 'get_info_status' in globals():
+    def write_():
         if main_status and get_info_status:
-            writter(SteamID, data_float)
+            writter(SteamID, data_float, get_info.custom_URL, get_info.profile_state, get_info.profile_created, get_info.name_, get_info.location_, get_info.profile_url)
+    try:
+        if 'main_status' and 'get_info_status' in globals():
+            write_()
+    except:
+        pass
 
 def verification():
+    try:
+        global chromedriver_hidden
+        chrome_params = Options()
+        chrome_params.add_argument("--log-level=3")
+        chrome_params.headless = True
+        chromedriver_hidden = webdriver.Chrome(executable_path=chromedriver_path, options=chrome_params)
+    except:
+        pass
     if test_connexion() and get_version() and check_server():
         if argv[1].isdigit() and int(argv[1]) > 9999999999999999:
             global SteamID
@@ -165,23 +179,25 @@ def verification():
                 chrome_params = Options()
                 chrome_params.add_argument("--log-level=3")
                 chrome_params.headless = True
-                driver4 = webdriver.Chrome(executable_path='chromedriver_94.exe', options=chrome_params)
-                driver4.get("https://steamid.io/")
+                chromedriver_hidden.get("https://steamid.io/")
                 try:
-                    driver4.find_element(By.XPATH, "//input[@id='input']").send_keys(argv[1])
-                    driver4.find_element(By.XPATH, "//button[@class='btn btn-danger input-lg']").click()
-                    SteamID = driver4.find_element(By.XPATH, "//dd[@class='value short'][3]/a").text
+                    chromedriver_hidden.find_element(By.XPATH, "//input[@id='input']").send_keys(argv[1])
+                    chromedriver_hidden.find_element(By.XPATH, "//button[@class='btn btn-danger input-lg']").click()
+                    SteamID = chromedriver_hidden.find_element(By.XPATH, "//dd[@class='value short'][3]/a").text
                     start_threads()
                 except:
                     print('Steam profile link not found !')
             else:
-                print("Format not valid!")
+                print("Format not valid !")
     else:
         if test_connexion() and check_server():
             if os.path.exists('C:\Program Files\Google\Chrome\Application\chrome.exe') or os.path.exists('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'):
-                print(f'Chrome detected, but you need to have version {version_chromedriver}')
+                try:
+                    print(f'Chrome detected, but you need to have v{version_chromedriver} of Chrome Browser')
+                except:
+                    print("Chromedriver not detected, maybe your antivirus delete it !")
             else:
-                print("Chrome not detected, please install it")
+                print("Chrome not detected, please install it.")
         elif test_connexion():
             print('Server down, please retry later.')
         else:
@@ -198,6 +214,12 @@ def declared():
         return False
 
 if declared():
+    def exit_handler():
+        try:
+            chromedriver_hidden.quit()
+        except:
+            pass
+    atexit.register(exit_handler)
     verification()
 else:
     try:
