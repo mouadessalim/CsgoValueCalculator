@@ -22,12 +22,8 @@ For Node module you just need Electron for GUI:
 - Electron: `npm install electron --save-dev`
 
 ## Setup
-After installing all dependencies, you need to specify path of ChromeDriver to **csgovaluecalculator.py**
-```python
- driver1 = webdriver.Chrome(executable_path='PATH TO CHROMEDRIVER', options=chrome_params)
- driver3 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', options=chrome_params)
- driver4 = webdriver.Chrome(executable_path='PATH_TO_CHROMEDRIVER', options=chrome_params)
-```
+After installing all dependencies, you need to rename ChromeDriver to **chromedriver_VERSION**, for example the lastest version of chromedriver is v95 so you need to rename chromedriver to `chromedriver_95`.
+
 ### Discord Features
 If you want to use Discord feature you need to setup Discord API and WEBHOOK variable in **uploader_DS.py**
 ```python
