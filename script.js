@@ -27,7 +27,7 @@ function pythcall(x) {
     });
 }
 
-function myFonction() {
+function myFonction() { //lgtm [js/unused-local-variable]
     response.innerHTML = "Searching, please wait...";
     if(isNaN(input_value.value)){ 
         if(input_value.value.substring(0, 29) == "http://steamcommunity.com/id/"){
@@ -87,7 +87,7 @@ function pyth_discord() {
     });
 }
 
-function exec_historic() {
+function exec_historic() { //lgtm [js/unused-local-variable]
     if (input_value.value) {
         pyth_discord()
     }else{
