@@ -19,15 +19,33 @@ for file in os.listdir('.'):
         version_chromedriver = str(os.path.splitext(file)[0][-2:])
         chromedriver_path = file
         break
-try:
-    k = version_chromedriver
-    n = chromedriver_path
-except:
+if 'version_chromedriver' and 'chromedriver_path' in locals():
+    pass
+else:
     for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend'):
         if file.endswith(".exe") and file[:-6] == "chromedriver_":
             version_chromedriver = str(os.path.splitext(file)[0][-2:])
             chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}"
             break
+    if 'version_chromedriver' and 'chromedriver_path' in locals():
+        pass
+    else:
+        try:
+            for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend'):
+                if file.endswith(".exe") and file[:-6] == "chromedriver_":
+                    version_chromedriver = str(os.path.splitext(file)[0][-2:])
+                    chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}"
+                    break
+        except FileNotFoundError:
+            print("ChromeDriver not found, maybe your antivirus delete it!")
+            try:
+                sys.exit()
+            except:
+                try:
+                    quit()
+                except:
+                    pass 
+
 
 def main_writter(s, v, aa, bb, cc, dd, ee, ff):
     with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
@@ -71,40 +89,42 @@ def get_info():
     except:
         get_info_status = False
 
+def convert_currency():
+    response_ip_currency = requests.get("https://ipapi.co/currency/")
+    currency = str(response_ip_currency.text)
+    if currency == "EUR":
+        print(str(data_float) + " EUR")
+    else:
+        response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{currency.lower()}.json").json()
+        conversion = response[currency.lower()] * data_float
+        conversion_finished = round(conversion, 2)
+        print(str(conversion_finished) + " " + currency)
+
 def main_():
     global main_status
     valid_response = requests.get(f"https://www.steamidfinder.com/lookup/{SteamID}")
     if valid_response.ok:
+        chrome_params = Options()
+        chrome_params.add_argument("--window-size=0,0")
+        chrome_params.add_argument("--log-level=3")
+        driver1 = webdriver.Chrome(executable_path=chromedriver_path, options=chrome_params)
+        driver1.set_window_position(-10000,0)
+        driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
         try:
-            chrome_params = Options()
-            chrome_params.add_argument("--window-size=0,0")
-            chrome_params.add_argument("--log-level=3")
-            driver1 = webdriver.Chrome(executable_path=chromedriver_path, options=chrome_params)
-            driver1.set_window_position(-10000,0)
-            driver1.get(f"https://csgobackpack.net//?nick={SteamID}")
             element = WebDriverWait(driver1, 10).until(
                 EC.presence_of_element_located((By.XPATH, "/html/body//div[@id='info']//p"))
             )
             global data_float
             data_float = float(element.text[:-1])
-            responseip = requests.get("https://api.techniknews.net/ipgeo/").json()
-            if responseip['currency'] == "EUR":
-                print(str(data_float) + " EUR")
-                main_status = True
-            else:
-                response = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{responseip['currency'].lower()}.json").json()
-                conversion = response[responseip['currency'].lower()] * data_float
-                conversion_finished = round(conversion, 2)
-                print(str(conversion_finished) + " " + responseip['currency'])
-                main_status = True
+            main_status = True
+            convert_currency()
         except:
             print("This inventory is private or user doesn't have any items in inventory")
             main_status = False
-        finally:
-            try:
-                driver1.quit()
-            except:
-                pass
+        try:
+            driver1.quit()
+        except:
+            pass
     else:
         print("This SteamID doesn't exist.")
 
@@ -120,10 +140,8 @@ def check_server():
         socket.create_connection(('csgobackpack.net', 80))
         socket.create_connection(('cdn.jsdelivr.net', 80))
         socket.create_connection(('steamidfinder.com', 80))
-        if requests.get("https://api.techniknews.net/ipgeo/").ok:
-            return True
-        else:
-            return False
+        socket.create_connection(('ipapi.co', 80))
+        return True
     except:
         return False
 
