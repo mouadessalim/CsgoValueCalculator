@@ -119,22 +119,13 @@ def check_server():
         global response
         global response_discord
         global response_c
-        check_response = requests.get("https://api.techniknews.net/ipgeo/")
-        response = check_response.json()
-        if check_response.ok:
-            currency = response['currency']
-        else:
-            response_ip_currency = requests.get("https://ipapi.co/currency/")
-            if response_ip_currency.ok:
-                currency = str(response_ip_currency.text)
+        response_ip_currency = requests.get("https://ipapi.co/currency/")
+        currency = str(response_ip_currency.text) 
         check_response_1 = requests.get(DISCORD_JSON_API)
         response_discord = check_response_1.json()
         check_response_2 = requests.get(f"https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/eur/{currency.lower()}.json")
         response_c = check_response_2.json()
-        if check_response_1.ok and check_response_2.ok:
-            return True
-        else:
-            return False
+        return True
     except:
         return False
 
