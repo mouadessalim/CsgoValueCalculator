@@ -2,7 +2,7 @@
 const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
-const path_extraResources = path.dirname(__dirname); //lgtm [js/unused-local-variable]
+//const path_extraResources = path.dirname(__dirname);
 var input_value = document.getElementById('input_SteamID');
 var response = document.getElementById('value_js');
 
