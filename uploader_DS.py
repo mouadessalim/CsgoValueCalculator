@@ -6,7 +6,6 @@ import json
 import os
 from datetime import datetime
 import socket
-from sys import argv
 import sys
 from discord_webhook import DiscordWebhook, DiscordEmbed
 
@@ -71,7 +70,7 @@ def exec_main():
 def exec_discord():
     try:
         n = 0
-        while response_discord['members'][n]['username'] != argv[2]:
+        while response_discord['members'][n]['username'] != sys.argv[2]:
             n += 1 
         status_members = True    
     except IndexError:
@@ -131,7 +130,7 @@ def check_server():
 
 def declared():
     try:
-        x = argv[1]
+        x = sys.argv[1]
         if x == "KEY_FILEIO" or x=="KEY_DISCORD":
             return True
         else:
@@ -140,9 +139,9 @@ def declared():
         return False
 
 if test_connexion() and check_server() and declared():
-    if argv[1] == "KEY_FILEIO":
+    if sys.argv[1] == "KEY_FILEIO":
         exec_main()
-    elif argv[1] == "KEY_DISCORD":
+    elif sys.argv[1] == "KEY_DISCORD":
         exec_discord()
 else:
     if test_connexion() and declared():
