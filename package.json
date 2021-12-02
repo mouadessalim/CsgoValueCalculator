@@ -1,6 +1,6 @@
 {
   "name": "csgo-value-calculator",
-  "version": "4.2.2",
+  "version": "4.3.0",
   "description": "calculate any Steam Csgo Inventory just with SteamID or Steam profile link.",
   "main": "app.js",
   "scripts": {
