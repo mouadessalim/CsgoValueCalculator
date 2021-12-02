@@ -2,7 +2,6 @@
 
 import requests
 import json
-from sys import argv
 import sys
 import os
 import socket 
@@ -13,39 +12,34 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import atexit
+from zipfile import ZipFile 
 
 for file in os.listdir('.'):
     if file.endswith(".exe") and file[:-6] == "chromedriver_":
+        global version_chromedriver
+        global chromedriver_path
         version_chromedriver = str(os.path.splitext(file)[0][-2:])
         chromedriver_path = file
         break
-if 'version_chromedriver' and 'chromedriver_path' in locals():
+if 'version_chromedriver' and 'chromedriver_path' in globals():
     pass
 else:
     for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend'):
         if file.endswith(".exe") and file[:-6] == "chromedriver_":
             version_chromedriver = str(os.path.splitext(file)[0][-2:])
-            chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}"
+            chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}.exe"
             break
-    if 'version_chromedriver' and 'chromedriver_path' in locals():
+    if 'version_chromedriver' and 'chromedriver_path' in globals():
         pass
     else:
         try:
             for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend'):
                 if file.endswith(".exe") and file[:-6] == "chromedriver_":
                     version_chromedriver = str(os.path.splitext(file)[0][-2:])
-                    chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}"
+                    chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}.exe"
                     break
         except FileNotFoundError:
-            print("ChromeDriver not found, maybe your antivirus delete it!")
-            try:
-                sys.exit()
-            except:
-                try:
-                    quit()
-                except:
-                    pass 
-
+            pass
 
 def main_writter(s, v, aa, bb, cc, dd, ee, ff):
     with open(f"{os.getenv('APPDATA')}\csgo-value-calculator\csgoaccount.json", 'r') as f:
@@ -117,10 +111,11 @@ def main_():
             global data_float
             data_float = float(element.text[:-1])
             main_status = True
-            convert_currency()
         except:
             print("This inventory is private or user doesn't have any items in inventory")
             main_status = False
+        if 'data_float' in globals():
+            convert_currency()
         try:
             driver1.quit()
         except:
@@ -169,6 +164,7 @@ def start_threads():
     th2.start()
     th1.join()
     th2.join()
+
     def write_():
         if main_status and get_info_status:
             writter(SteamID, data_float, get_info.custom_URL, get_info.profile_state, get_info.profile_created, get_info.name_, get_info.location_, get_info.profile_url)
@@ -178,6 +174,38 @@ def start_threads():
     except:
         pass
 
+def dl_chromedriver():
+    try:
+        try:
+            chromedriver_hidden.quit()
+        except:
+            pass
+        url_requests = requests.get("https://cdn.jsdelivr.net/gh/mouadessalim/csgovaluecalculator@main/api.json").json()
+        url = url_requests['link']
+        if url_requests['v'] != version_chromedriver:
+            r = requests.get(url, allow_redirects=True)
+            def invert(zip, exe, replace=False):
+                with open(zip, 'wb') as f:
+                    f.write(r.content)
+                with ZipFile(zip, 'r') as f:  
+                    if replace:
+                        f.extractall("resources\\extraResources\\backend")
+                        os.rename(f"{exe}.exe", f"{exe}_{url_requests['v']}.exe")
+                    else:
+                        f.extractall()
+                        os.rename(f"{exe}.exe", f"{exe}_{url_requests['v']}.exe")
+                os.remove(chromedriver_path)
+                os.remove(zip)
+            if os.path.exists('resources\\extraResources'):
+                invert('resources\\extraResources\\backend\\chromedriver_win32.zip', 'resources\\extraResources\\backend\\chromedriver', replace=True)
+            else:
+                invert('chromedriver_win32.zip', 'chromedriver')
+            return True
+        else:
+            return False
+    except:
+        return False
+    
 def verification():
     try:
         global chromedriver_hidden
@@ -188,18 +216,18 @@ def verification():
     except:
         pass
     if test_connexion() and get_version() and check_server():
-        if argv[1].isdigit() and int(argv[1]) > 9999999999999999:
+        if sys.argv[1].isdigit() and int(sys.argv[1]) > 9999999999999999:
             global SteamID
-            SteamID = argv[1]
+            SteamID = sys.argv[1]
             start_threads()
         else:
-            if not argv[1].isdigit():
+            if not sys.argv[1].isdigit():
                 chrome_params = Options()
                 chrome_params.add_argument("--log-level=3")
                 chrome_params.headless = True
                 chromedriver_hidden.get("https://steamid.io/")
                 try:
-                    chromedriver_hidden.find_element(By.XPATH, "//input[@id='input']").send_keys(argv[1])
+                    chromedriver_hidden.find_element(By.XPATH, "//input[@id='input']").send_keys(sys.argv[1])
                     chromedriver_hidden.find_element(By.XPATH, "//button[@class='btn btn-danger input-lg']").click()
                     SteamID = chromedriver_hidden.find_element(By.XPATH, "//dd[@class='value short'][3]/a").text
                     start_threads()
@@ -209,10 +237,13 @@ def verification():
                 print("Format not valid !")
     else:
         if test_connexion() and check_server():
-            if os.path.exists('C:\Program Files\Google\Chrome\Application\chrome.exe') or os.path.exists('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'):
-                try:
-                    print(f'Chrome detected, but you need to have v{version_chromedriver} of Chrome Browser')
-                except:
+            if os.path.exists('C:\Program Files\Google\Chrome\Application\chrome.exe') or os.path.exists('C:\Program Files (x86)\Google\Chrome\Application\chrome.exe'): 
+                if 'version_chromedriver' in locals() or 'version_chromedriver' in globals():
+                    if dl_chromedriver():
+                        print("A new chromedriver was installed please restart the app")
+                    else:
+                        print("The chromedriver is outdated please wait an update.")
+                else:
                     print("Chromedriver not detected, maybe your antivirus delete it !")
             else:
                 print("Chrome not detected, please install it.")
@@ -223,11 +254,11 @@ def verification():
 
 def declared():
     try:
-        x = argv[1]
-        if x == "build":
-            return False
-        else:
+        x = sys.argv[1]
+        if __name__ == '__main__':
             return True
+        else:
+            return False
     except:
         return False
 
