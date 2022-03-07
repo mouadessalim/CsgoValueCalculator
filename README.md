@@ -1,4 +1,3 @@
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/mouadessalim/CsgoValueCalculator.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/mouadessalim/CsgoValueCalculator/alerts/)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # CsgoValueCalculator
