@@ -1,4 +1,0 @@
-queries:
-- exclude: py/procedure-return-value-used
-- exclude: js/xss-through-dom
-- exclude: py/catch-base-exception
