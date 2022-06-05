@@ -15,29 +15,50 @@ import atexit
 from zipfile import ZipFile 
 
 for file in os.listdir('.'):
-    if file.endswith(".exe") and file[:-6] == "chromedriver_":
-        global version_chromedriver
-        global chromedriver_path
-        version_chromedriver = str(os.path.splitext(file)[0][-2:])
+    if file.endswith(".exe") and file[:13] == "chromedriver_":
+        if len(file.partition('_')[2]) == 6:
+            version_chromedriver = str(os.path.splitext(file)[0][-2:])
+        elif len(file.partition('_')[2]) == 7:
+            version_chromedriver = str(os.path.splitext(file)[0][-3:])
+        else:
+            pass
         chromedriver_path = file
         break
-if 'version_chromedriver' and 'chromedriver_path' in globals():
+if 'version_chromedriver' and 'chromedriver_path' in locals():
     pass
 else:
-    for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend'):
-        if file.endswith(".exe") and file[:-6] == "chromedriver_":
-            version_chromedriver = str(os.path.splitext(file)[0][-2:])
-            chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}.exe"
-            break
-    if 'version_chromedriver' and 'chromedriver_path' in globals():
+    if os.path.exists(f'{os.path.expanduser("~")}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend'):
+        for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend'):
+            if file.endswith(".exe") and file[:13] == "chromedriver_":
+                if len(file.partition('_')[2]) == 6:
+                    version_chromedriver = str(os.path.splitext(file)[0][-2:])
+                elif len(file.partition('_')[2]) == 7:
+                    version_chromedriver = str(os.path.splitext(file)[0][-3:])
+                else:
+                    pass
+                try:
+                    chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\csgo-value-calculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}.exe"
+                except NameError:
+                    pass
+                break
+    if 'version_chromedriver' and 'chromedriver_path' in locals():
         pass
     else:
         try:
-            for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend'):
-                if file.endswith(".exe") and file[:-6] == "chromedriver_":
-                    version_chromedriver = str(os.path.splitext(file)[0][-2:])
-                    chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}.exe"
-                    break
+            if os.path.exists(f'{os.path.expanduser("~")}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend'):
+                for file in os.listdir(f'{os.path.expanduser("~")}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend'):
+                    if file.endswith(".exe") and file[:13] == "chromedriver_":
+                        if len(file.partition('_')[2]) == 6:
+                            version_chromedriver = str(os.path.splitext(file)[0][-2:])
+                        elif len(file.partition('_')[2]) == 7:
+                            version_chromedriver = str(os.path.splitext(file)[0][-3:])
+                        else:
+                            pass
+                        try:
+                            chromedriver_path = f"{os.path.expanduser('~')}\AppData\Local\Programs\CsgoValueCalculator\\resources\extraResources\\backend\chromedriver_{version_chromedriver}.exe"
+                        except NameError:
+                            pass
+                        break
         except FileNotFoundError:
             pass
 
@@ -144,7 +165,7 @@ def get_version():
     try:
         if 'browserVersion' in chromedriver_hidden.capabilities:
             v = chromedriver_hidden.capabilities['browserVersion']
-            if v[:2] == version_chromedriver:
+            if v[:2] == version_chromedriver or v[:3] == version_chromedriver:
                 return True
             else:
                 return False
@@ -194,6 +215,7 @@ def dl_chromedriver():
                     else:
                         f.extractall()
                         os.rename(f"{exe}.exe", f"{exe}_{url_requests['v']}.exe")
+                    
                 os.remove(chromedriver_path)
                 os.remove(zip)
             if os.path.exists('resources\\extraResources'):
@@ -206,6 +228,7 @@ def dl_chromedriver():
     except:
         return False
     
+
 def verification():
     try:
         global chromedriver_hidden
