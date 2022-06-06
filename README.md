@@ -21,7 +21,7 @@ For Node module you just need Electron for GUI:
 - Electron: `npm install electron --save-dev`
 
 ## Setup
-After installing all dependencies, you need to rename ChromeDriver to **chromedriver_VERSION**, for example the lastest version of chromedriver is v96 so you need to rename chromedriver to `chromedriver_96` and place it in the same folder than the repository.
+After installing all dependencies, you need to rename ChromeDriver to **chromedriver_VERSION**, for example the lastest version of chromedriver is v102 so you need to rename chromedriver to `chromedriver_102` and place it in the same folder than the repository.
 
 ### Discord Features
 If you want to use Discord feature you need to setup Discord API and WEBHOOK variable in **uploader_DS.py**
