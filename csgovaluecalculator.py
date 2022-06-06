@@ -215,7 +215,6 @@ def dl_chromedriver():
                     else:
                         f.extractall()
                         os.rename(f"{exe}.exe", f"{exe}_{url_requests['v']}.exe")
-                    
                 os.remove(chromedriver_path)
                 os.remove(zip)
             if os.path.exists('resources\\extraResources'):
@@ -228,7 +227,6 @@ def dl_chromedriver():
     except:
         return False
     
-
 def verification():
     try:
         global chromedriver_hidden
